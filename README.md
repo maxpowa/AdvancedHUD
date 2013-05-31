@@ -10,3 +10,4 @@ http://www.minecraftforum.net/topic/690142-147-advanced-hud-481/
 and if that link is down, here's a screenshot:
 http://goo.gl/w27fw
 
+At the moment, all credit goes to TurboSlow for the code and textures, when I get more into it I'm sure I'll find fixes I can make.
