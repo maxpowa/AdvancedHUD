@@ -32,7 +32,7 @@ public class HudItemItemTooltips extends HudItem
       itemName = currentName;
 
       if (currentItem != null) {
-        itemRarityColorCode = ("§" + Integer.toHexString(currentItem.getRarity().rarityColor));
+        itemRarityColorCode = ("\u00A7" + Integer.toHexString(currentItem.getRarity().rarityColor));
         stringColor = (16777215 + ((int)(fadeHelper.getAlpha() * 255.0F) << 24));
       }
     }

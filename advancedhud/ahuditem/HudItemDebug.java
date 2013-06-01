@@ -70,12 +70,12 @@ public class HudItemDebug extends HudItem
       if (buttonPosition.value) {
         int posX = MathHelper.floor_double(mc.thePlayer.posX);
         int posZ = MathHelper.floor_double(mc.thePlayer.posZ);
-        drawString(String.format("x: §6%.5f§r (§6%d§r) // c: §6%d§r (§6%d§r)", new Object[] { Double.valueOf(mc.thePlayer.posX), Integer.valueOf(posX), Integer.valueOf(posX >> 4), Integer.valueOf(posX & 0xF) }), false);
-        drawString(String.format("y: §6%.3f§r (feet pos, §6%.3f§r eyes pos)", new Object[] { Double.valueOf(mc.thePlayer.boundingBox.minY), Double.valueOf(mc.thePlayer.posY) }), false);
-        drawString(String.format("z: §6%.5f§r (§6%d§r) // c: §6%d§r (§6%d§r)", new Object[] { Double.valueOf(mc.thePlayer.posZ), Integer.valueOf(posZ), Integer.valueOf(posZ >> 4), Integer.valueOf(posZ & 0xF) }), false);
+        drawString(String.format("x: \u00A76%.5f\u00A7r (\u00A76%d\u00A7r) // c: \u00A76%d\u00A7r (\u00A76%d\u00A7r)", new Object[] { Double.valueOf(mc.thePlayer.posX), Integer.valueOf(posX), Integer.valueOf(posX >> 4), Integer.valueOf(posX & 0xF) }), false);
+        drawString(String.format("y: \u00A76%.3f\u00A7r (feet pos, \u00A76%.3f\u00A7r eyes pos)", new Object[] { Double.valueOf(mc.thePlayer.boundingBox.minY), Double.valueOf(mc.thePlayer.posY) }), false);
+        drawString(String.format("z: \u00A76%.5f\u00A7r (\u00A76%d\u00A7r) // c: \u00A76%d\u00A7r (\u00A76%d\u00A7r)", new Object[] { Double.valueOf(mc.thePlayer.posZ), Integer.valueOf(posZ), Integer.valueOf(posZ >> 4), Integer.valueOf(posZ & 0xF) }), false);
 
         int facing = MathHelper.floor_double(mc.thePlayer.rotationYaw * 4.0F / 360.0F + 0.5D) & 0x3;
-        drawString("f: §6" + facing + "§r (" + net.minecraft.util.Direction.directions[facing] + ") / §6" + MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw), false);
+        drawString("f: \u00A76" + facing + "\u00A7r (" + net.minecraft.util.Direction.directions[facing] + ") / \u00A76" + MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw), false);
       }
 
       int blockX = MathHelper.floor_double(mc.thePlayer.posX);
@@ -90,22 +90,22 @@ public class HudItemDebug extends HudItem
         Chunk chunk = mc.theWorld.getChunkFromBlockCoords(blockX, blockZ);
 
         if (buttonWorld.value) {
-          String lc = "chunkHeight: §6" + (chunk.getTopFilledSegment() + 15) + "§r";
-          String b = "biome: §6" + chunk.getBiomeGenForWorldCoords(chunkX, chunkZ & 0xF, mc.theWorld.getWorldChunkManager()).biomeName;
+          String lc = "chunkHeight: \u00A76" + (chunk.getTopFilledSegment() + 15) + "\u00A7r";
+          String b = "biome: \u00A76" + chunk.getBiomeGenForWorldCoords(chunkX, chunkZ & 0xF, mc.theWorld.getWorldChunkManager()).biomeName;
           drawString(lc + " " + b, false);
         }
 
         if (buttonLight.value) {
-          String bl = "block light: §6" + chunk.getSavedLightValue(EnumSkyBlock.Block, chunkX, blockY, chunkZ) + "§r";
-          String sl = "sky light: §6" + chunk.getSavedLightValue(EnumSkyBlock.Sky, chunkX, blockY, chunkZ) + "§r";
-          String rl = "raw light: §6" + chunk.getBlockLightValue(chunkX, blockY, chunkZ, 0) + "§r";
+          String bl = "block light: \u00A76" + chunk.getSavedLightValue(EnumSkyBlock.Block, chunkX, blockY, chunkZ) + "\u00A7r";
+          String sl = "sky light: \u00A76" + chunk.getSavedLightValue(EnumSkyBlock.Sky, chunkX, blockY, chunkZ) + "\u00A7r";
+          String rl = "raw light: \u00A76" + chunk.getBlockLightValue(chunkX, blockY, chunkZ, 0) + "\u00A7r";
           drawString(bl + " " + sl + " " + rl, false);
         }
 
         if (buttonSpeed.value) {
-          String ws = "walking speed: " + String.format("§6%.3f§r ", new Object[] { Float.valueOf(mc.thePlayer.capabilities.getWalkSpeed()) });
-          String fs = "flying speed: " + String.format("§6%.3f§r", new Object[] { Float.valueOf(mc.thePlayer.capabilities.getFlySpeed()) });
-          String g = "ground: " + String.format("§6%b§r", new Object[] { Boolean.valueOf(mc.thePlayer.onGround) });
+          String ws = "walking speed: " + String.format("\u00A76%.3f\u00A7r ", new Object[] { Float.valueOf(mc.thePlayer.capabilities.getWalkSpeed()) });
+          String fs = "flying speed: " + String.format("\u00A76%.3f\u00A7r", new Object[] { Float.valueOf(mc.thePlayer.capabilities.getFlySpeed()) });
+          String g = "ground: " + String.format("\u00A76%b\u00A7r", new Object[] { Boolean.valueOf(mc.thePlayer.onGround) });
           drawString(ws + fs, false);
           drawString(g, false);
         }
@@ -117,10 +117,10 @@ public class HudItemDebug extends HudItem
         long memTot = Runtime.getRuntime().totalMemory();
         long memDif = memTot - Runtime.getRuntime().freeMemory();
 
-        String memoryInfo = "Used memory: §6" + memDif * 100L / memMax + "%§r (§6" + memDif / 1048576L + "§rMB) of §6" + memMax / 1048576L + "§rMB";
+        String memoryInfo = "Used memory: \u00A76" + memDif * 100L / memMax + "%\u00A7r (\u00A76" + memDif / 1048576L + "\u00A7rMB) of \u00A76" + memMax / 1048576L + "\u00A7rMB";
         drawStringRight(memoryInfo, false);
 
-        memoryInfo = "Allocated memory: §6" + memTot * 100L / memMax + "§r% (§6" + memTot / 1048576L + "§rMB)";
+        memoryInfo = "Allocated memory: \u00A76" + memTot * 100L / memMax + "\u00A7r% (\u00A76" + memTot / 1048576L + "\u00A7rMB)";
         drawStringRight(memoryInfo, false);
       }
     }
