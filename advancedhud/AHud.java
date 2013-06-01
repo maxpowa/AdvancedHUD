@@ -17,8 +17,8 @@ import net.minecraft.src.ModLoader;
 
 public class AHud
 {
-  public static final String version = "4.8.1";
-  protected static final String MCversion = "1.5.2";
+  public static final String version = "@VERSION@";
+  protected static final String MCversion = "@MCVERSION@";
   protected static List hudItemList = new ArrayList();
 
   protected static List hudItemListActive = new ArrayList();
