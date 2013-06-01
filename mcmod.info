@@ -1,0 +1,17 @@
+[
+{
+"modid": "advancedhud",
+"name": "Advanced HUD",
+"description": "A continuation of Advanced HUD by TurboSlow",
+"version": "Version [@VERSION@] for @MCVERSION@",
+"credits": "Created by TurboSlow, Maintained by maxpowa",
+"logoFile": "",
+"mcversion": "@MCVERSION@",
+"url": "",
+"updateUrl": "",
+"authors": [ "maxpowa", "TurboSlow" ],
+"parent":"",
+"screenshots": [],
+"dependencies": []
+}
+]
