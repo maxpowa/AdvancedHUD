@@ -91,12 +91,10 @@ public class AGuiInGame extends GuiIngame
 		if (mc.currentScreen == null) {
 			while (AHud.keyBinding.isPressed()) mc.displayGuiScreen(new GuiScreenSettings());
 		}
-
-		boolean isSurvival = mc.playerController.shouldDrawHUD();
 		if (mc.theWorld != null) {
 			for (Object item_ : AHud.getActiveHudItemList()) {
 				HudItem item = (HudItem) item_;
-				if ((isSurvival) || (item.isRenderedInCreative())) {
+				if ((mc.playerController.shouldDrawHUD()) || (item.isRenderedInCreative())) {
 					profiler.startSection(item.getName());
 					item.tick();
 					profiler.endSection();
@@ -105,7 +103,7 @@ public class AGuiInGame extends GuiIngame
 		}
 
 		super.updateTick();
-
+		
 		profiler.endSection();
 	}
 
