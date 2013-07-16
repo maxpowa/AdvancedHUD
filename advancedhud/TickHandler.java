@@ -11,17 +11,17 @@ import cpw.mods.fml.common.TickType;
 
 public class TickHandler implements ITickHandler {
 
-    boolean ticked;
+    private boolean ticked = false;
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData) {
+        // Do nothing.
     }
 
     @Override
     public void tickEnd(EnumSet<TickType> type, Object... tickData) {
         if (!ticked && Minecraft.getMinecraft().ingameGUI != null) {
-            Minecraft mc = Minecraft.getMinecraft();
-            mc.ingameGUI = new GuiAdvancedHUD(mc);
+            Minecraft.getMinecraft().ingameGUI = new GuiAdvancedHUD(Minecraft.getMinecraft());
             ticked = true;
         }
     }

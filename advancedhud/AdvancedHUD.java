@@ -1,16 +1,19 @@
 package advancedhud;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
+import java.util.logging.Logger;
+
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+import advancedhud.api.SaveController;
+import advancedhud.client.huditems.HudItemHealth;
+import advancedhud.client.huditems.HudItemHotbar;
+
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -18,49 +21,29 @@ import cpw.mods.fml.relauncher.Side;
 public class AdvancedHUD {
 
     public static String MC_VERSION = "@MCVERSION@";
-    public static String TK_VERSION = "@VERSION@";
+    public static String ADVHUD_VERSION = "@VERSION@";
     
     public static File configFile = null;
     
-    @Init
+    @EventHandler
     public void onInit(FMLInitializationEvent event) {
-        configFile = getConfigFile();
         System.out.println("Loaded config file: " + configFile.getAbsolutePath());
         KeyBindingRegistry.registerKeyBinding(new KeyRegister());
         TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
+        
+        registerHUDItems();
     }
     
-    public static File getConfigFile() {
-        return createAndGetNBTFile(createAndGetFile(new File(new File(Minecraft.getMinecraft().mcDataDir, "AdvancedHUD"), "config.dat")));
-    }
-    
-    public static File createAndGetNBTFile(File f) {
-        try {
-            CompressedStreamTools.readCompressed(new FileInputStream(f));
-        } catch (Exception e) {
-            NBTTagCompound cmp = new NBTTagCompound();
-            try {
-                CompressedStreamTools.writeCompressed(cmp,
-                        new FileOutputStream(f));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+    @EventHandler
+    public void onPostInit(FMLPostInitializationEvent event) {
+        if (!SaveController.loadConfig("config")) {
+            ;
+            SaveController.saveConfig("config");
         }
-
-        return f;
     }
     
-    public static File createAndGetFile(File f) {
-        if (!f.exists()) {
-            try {
-                f.getParentFile().mkdirs();
-                f.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return f;
-    }
-    
+    private void registerHUDItems() {
+        HUDRegistry.registerHudItem(new HudItemHotbar());
+        HUDRegistry.registerHudItem(new HudItemHealth());
+    }    
 }
