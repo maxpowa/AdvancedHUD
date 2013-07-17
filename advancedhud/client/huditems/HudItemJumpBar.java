@@ -1,0 +1,90 @@
+package advancedhud.client.huditems;
+
+import net.minecraft.client.Minecraft;
+
+import org.lwjgl.opengl.GL11;
+
+import advancedhud.api.Alignment;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+import advancedhud.api.RenderAssist;
+import advancedhud.client.GuiAdvancedHUD;
+import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
+import advancedhud.client.ui.GuiScreenReposition;
+
+public class HudItemJumpBar extends HudItem {
+
+    @Override
+    public String getName() {
+        return "jumpbar";
+    }
+
+    @Override
+    public String getButtonLabel() {
+        return "JUMPBAR";
+    }
+
+    @Override
+    public Alignment getDefaultAlignment() {
+        return Alignment.BOTTOMCENTER;
+    }
+
+    @Override
+    public int getDefaultPosX() {
+        return HUDRegistry.screenWidth / 2 - 91;
+    }
+
+    @Override
+    public int getDefaultPosY() {
+        return HUDRegistry.screenHeight - 29;
+    }
+
+    @Override
+    public int getWidth() {
+        return 182;
+    }
+
+    @Override
+    public int getHeight() {
+        return 4;
+    }
+
+    @Override
+    public int getDefaultID() {
+        return 9;
+    }
+
+    @Override
+    public void render(float paramFloat) {
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.mcProfiler.startSection("jumpBar");
+        RenderAssist.bindTexture(GuiAdvancedHUD.field_110324_m);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        float charge = mc.thePlayer.func_110319_bJ();
+        final int barWidth = 182;
+        int x = posX;
+        int filled = (int)(charge * (float)(barWidth + 1));
+        int top = posY;
+
+        RenderAssist.drawTexturedModalRect(x, top, 0, 84, barWidth, 5);
+        
+        if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration
+                || mc.currentScreen instanceof GuiScreenReposition)
+                && filled == 0)                
+            filled = 182;
+        
+        if (filled > 0)
+        {
+            RenderAssist.drawTexturedModalRect(x, top, 0, 89, filled, 5);
+        }
+
+        mc.mcProfiler.endSection();
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    public boolean isDrawnWhenOnMount() {
+        return true;
+    }
+
+}
