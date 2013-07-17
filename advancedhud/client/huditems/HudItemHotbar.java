@@ -122,5 +122,9 @@ public class HudItemHotbar extends HudItem {
     public int getDefaultID() {
         return 1;
     }
-    
+
+    public boolean isDrawnWhenOnMount() {
+        return true;
+    }
+
 }
