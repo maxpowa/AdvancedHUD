@@ -1,4 +1,4 @@
-package advancedhud.api;
+package advancedhud;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -22,7 +24,7 @@ public class SaveController {
     }
 
     public static boolean loadConfig(String name, String dirName) {
-        System.out.print("[AdvancedHUD] loading from file: ");
+        System.out.print("[AdvancedHUD] Loading");
 
         if (dirName != null) {
             HUDRegistry.getMinecraftInstance();
@@ -34,11 +36,11 @@ public class SaveController {
         File file = new File(dir, fileName);
 
         if (!file.exists()) {
-            System.out.println(file.getPath()
-                    + " (canceled, file does not exist)");
+            System.out.println(" canceled, file does not exist.");
             return false;
+        } else {
+            System.out.println(" successful.");
         }
-        System.out.println(file.getPath());
         try {
             NBTTagCompound nbt = CompressedStreamTools
                     .readCompressed(new FileInputStream(file));
@@ -60,7 +62,7 @@ public class SaveController {
     }
 
     public static void saveConfig(String name, String dirName) {
-        System.out.print("[AdvancedHUD] saving to file: ");
+        System.out.println("[AdvancedHUD] Saving...");
 
         if (dirName != null) {
             HUDRegistry.getMinecraftInstance();
@@ -75,8 +77,7 @@ public class SaveController {
 
         String fileName = name + ".dat";
         File file = new File(dir, fileName);
-
-        System.out.println(file.getPath());
+        
         try {
             NBTTagCompound nbt = new NBTTagCompound();
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -103,7 +104,7 @@ public class SaveController {
         return dir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-                return filename.endsWith(".CFG");
+                return filename.endsWith(".dat");
             }
         });
     }
