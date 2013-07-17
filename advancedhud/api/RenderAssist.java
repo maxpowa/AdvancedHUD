@@ -4,6 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 
+    /**
+     * 
+     * Some methods which are usually in GuiIngame, but since we don't have<br>
+     * direct access when rendering in HudItem, you may need to use these.
+     * 
+     * @author maxpowa
+     *
+     */
 public class RenderAssist {
 
     /**
@@ -33,12 +41,16 @@ public class RenderAssist {
         tessellator.draw();
     }
 
+    public static void bindTexture(ResourceLocation res) {
+        Minecraft.getMinecraft().func_110434_K().func_110577_a(res);
+    }
+    
     /**
      * Binds a texture, similar to the way renderEngine.bindTexture(String str) used to work.
      * 
      * @param textureLocation   Path to location, you should know how to format this.
      */
-    public static void bind(String textureLocation) {
+    public static void bindTexture(String textureLocation) {
         ResourceLocation res = new ResourceLocation(textureLocation);
         Minecraft.getMinecraft().func_110434_K().func_110577_a(res);
     }

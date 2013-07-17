@@ -2,6 +2,13 @@ package advancedhud.api;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * 
+ * Extend this to create your own elements which render on the GUI.
+ * 
+ * @author maxpowa
+ *
+ */
 public abstract class HudItem {
     public Alignment alignment;
     public int posX;
@@ -38,6 +45,9 @@ public abstract class HudItem {
 
     public abstract int getHeight();
     
+    /**
+     * Button ID for configuration screen, 0-25 are reserved for Vanilla use.
+     */
     public abstract int getDefaultID();
 
     public HudItem() {
@@ -61,10 +71,12 @@ public abstract class HudItem {
         return true;
     }
 
+    public boolean isDrawnWhenOnMount() {
+        return false;
+    }
+
     /**
-     * 
      * Ensures that the HudItem will never be off the screen
-     * 
      */
     public void fixBounds() {
         posX = Math.max(0, Math.min(HUDRegistry.screenWidth - getWidth(), posX));
@@ -72,10 +84,26 @@ public abstract class HudItem {
     }
 
     public void loadFromNBT(NBTTagCompound nbt) {
-        posX = nbt.getInteger("posX");
-        posY = nbt.getInteger("posY");
-        alignment = Alignment.fromString(nbt.getString("alignment"));
-        id = nbt.getInteger("id");
+        if (nbt.hasKey("posX")) {
+            posX = nbt.getInteger("posX");
+        } else {
+            posX = getDefaultPosX();
+        }
+        if (nbt.hasKey("posY")) {
+            posY = nbt.getInteger("posY");
+        } else {
+            posY = getDefaultPosY();
+        }
+        if (nbt.hasKey("alignment")) {
+            alignment = Alignment.fromString(nbt.getString("alignment"));
+        } else {
+            alignment = getDefaultAlignment();
+        }
+        if (nbt.hasKey("id")) {
+            id = nbt.getInteger("id");
+        } else {
+            id = getDefaultID();
+        }
     }
 
     public void saveToNBT(NBTTagCompound nbt) {

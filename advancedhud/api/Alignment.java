@@ -1,5 +1,13 @@
 package advancedhud.api;
 
+/**
+ * 
+ * Use Alignment to define the HudElement's "anchor"<br>
+ * as in which side of the screen it moves with.
+ * 
+ * @author maxpowa
+ *
+ */
 public enum Alignment
 {
   TOPLEFT, TOPCENTER, TOPRIGHT, 

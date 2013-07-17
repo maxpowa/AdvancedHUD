@@ -5,21 +5,24 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.crash.CallableMinecraftVersion;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.src.ModLoader;
 
+/**
+ * 
+ * Register your HUD elements with this.<p>
+ * You can register them at init, postinit, world load, really where ever you feel the need to.
+ * 
+ * @author maxpowa
+ *
+ */
 public class HUDRegistry {
-    public static final String version = "@VERSION@";
-    protected static final String MCversion = "@MCVERSION@";
     protected static List<HudItem> hudItemList = new ArrayList<HudItem>();
 
     protected static List<HudItem> hudItemListActive = new ArrayList<HudItem>();
 
-    public static KeyBinding keyBinding = new KeyBinding("Advanced HUD", 35);
     public static int screenWidth;
     public static int screenHeight;
-    public static int updateCounter;
 
     public static void registerHudItem(HudItem hudItem) {
         if (!hudItemList.contains(hudItem)) {
@@ -58,7 +61,7 @@ public class HUDRegistry {
     }
 
     public static String getMinecraftVersion() {
-        return MCversion;
+        return (new CallableMinecraftVersion(null)).minecraftVersion();
     }
     
     public static HudItem getHudItemByID(int id) {
@@ -68,6 +71,14 @@ public class HUDRegistry {
             }
         }
         return null;
+    }
+    
+    public static void resetAllDefaults() {
+        for (HudItem huditem : HUDRegistry.getHudItemList()) {
+            huditem.alignment = huditem.getDefaultAlignment();
+            huditem.posX = huditem.getDefaultPosX();
+            huditem.posY = huditem.getDefaultPosY();
+        }
     }
 
     public static void checkForResize() {
@@ -89,8 +100,7 @@ public class HUDRegistry {
 
     private static void fixHudItemOffsets(int newScreenWidth,
             int newScreenHeight, int oldScreenWidth, int oldScreenHeight) {
-        for (Object hudItem_ : hudItemList) {
-            HudItem hudItem = (HudItem) hudItem_;
+        for (HudItem hudItem : hudItemList) {
             if (Alignment.isHorizontalCenter(hudItem.alignment)) {
                 int offsetX = hudItem.posX - oldScreenWidth / 2;
                 hudItem.posX = newScreenWidth / 2 + offsetX;
