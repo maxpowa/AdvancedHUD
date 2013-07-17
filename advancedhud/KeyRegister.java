@@ -14,10 +14,10 @@ import cpw.mods.fml.common.TickType;
 
 public class KeyRegister extends KeyHandler {
 
-    public static KeyBinding openConfigKB = new KeyBinding("\u00a7aAdvancedHUD Open Config", Keyboard.KEY_H);
+    public static KeyBinding config = new KeyBinding("\u00a7aAdvancedHUD Config", Keyboard.KEY_H);
 
     public KeyRegister() {
-        super(new KeyBinding[] { openConfigKB }, new boolean[] { false });
+        super(new KeyBinding[] { config }, new boolean[] { false });
     }
 
     @Override
@@ -33,7 +33,7 @@ public class KeyRegister extends KeyHandler {
     @Override
     public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
         Minecraft mc = Minecraft.getMinecraft();
-        if (kb.keyCode == openConfigKB.keyCode && mc.currentScreen == null) {
+        if (kb.keyCode == config.keyCode && mc.currentScreen == null) {
             mc.displayGuiScreen(new GuiAdvancedHUDConfiguration());
         }
     }
