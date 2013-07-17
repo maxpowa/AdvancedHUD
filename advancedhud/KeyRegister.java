@@ -8,13 +8,13 @@ import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
 
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
-
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 
 public class KeyRegister extends KeyHandler {
 
-    public static KeyBinding config = new KeyBinding("\u00a7aAdvancedHUD Config", Keyboard.KEY_H);
+    public static KeyBinding config = new KeyBinding(
+            "\u00a7aAdvancedHUD Config", Keyboard.KEY_H);
 
     public KeyRegister() {
         super(new KeyBinding[] { config }, new boolean[] { false });

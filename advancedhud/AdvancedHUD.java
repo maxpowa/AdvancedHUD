@@ -4,12 +4,14 @@ import advancedhud.api.HUDRegistry;
 import advancedhud.client.huditems.HudItemAir;
 import advancedhud.client.huditems.HudItemArmor;
 import advancedhud.client.huditems.HudItemBossBar;
+import advancedhud.client.huditems.HudItemCrosshairs;
 import advancedhud.client.huditems.HudItemExperienceBar;
 import advancedhud.client.huditems.HudItemFood;
 import advancedhud.client.huditems.HudItemHealth;
 import advancedhud.client.huditems.HudItemHealthMount;
 import advancedhud.client.huditems.HudItemHotbar;
 import advancedhud.client.huditems.HudItemJumpBar;
+import advancedhud.client.huditems.HudItemTooltips;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -41,5 +43,7 @@ public class AdvancedHUD {
         HUDRegistry.registerHudItem(new HudItemJumpBar());
         HUDRegistry.registerHudItem(new HudItemHealthMount());
         HUDRegistry.registerHudItem(new HudItemExperienceBar());
+        HUDRegistry.registerHudItem(new HudItemCrosshairs());
+        HUDRegistry.registerHudItem(new HudItemTooltips());
     }
 }

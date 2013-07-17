@@ -10,11 +10,13 @@ import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * 
- * Register your HUD elements with this.<p>
- * You can register them at init, postinit, world load, really where ever you feel the need to.
+ * Register your HUD elements with this.
+ * <p>
+ * You can register them at init, postinit, world load, really where ever you
+ * feel the need to.
  * 
  * @author maxpowa
- *
+ * 
  */
 public class HUDRegistry {
     protected static List<HudItem> hudItemList = new ArrayList<HudItem>();
@@ -61,18 +63,17 @@ public class HUDRegistry {
     }
 
     public static String getMinecraftVersion() {
-        return (new CallableMinecraftVersion(null)).minecraftVersion();
+        return new CallableMinecraftVersion(null).minecraftVersion();
     }
-    
+
     public static HudItem getHudItemByID(int id) {
         for (HudItem huditem : getHudItemList()) {
-            if (id == huditem.getDefaultID()) {
+            if (id == huditem.getDefaultID())
                 return huditem;
-            }
         }
         return null;
     }
-    
+
     public static void resetAllDefaults() {
         for (HudItem huditem : HUDRegistry.getHudItemList()) {
             huditem.alignment = huditem.getDefaultAlignment();
@@ -81,7 +82,7 @@ public class HUDRegistry {
         }
     }
 
-    public static void checkForResize() {
+    public static boolean checkForResize() {
         Minecraft mc = getMinecraftInstance();
 
         ScaledResolution scaledresolution = new ScaledResolution(
@@ -95,7 +96,9 @@ public class HUDRegistry {
             }
             screenWidth = scaledresolution.getScaledWidth();
             screenHeight = scaledresolution.getScaledHeight();
+            return true;
         }
+        return false;
     }
 
     private static void fixHudItemOffsets(int newScreenWidth,
@@ -140,6 +143,6 @@ public class HUDRegistry {
             HudItem hudItem = (HudItem) hudItem_;
             nbt.setBoolean(hudItem.getName(), true);
         }
-        
+
     }
 }

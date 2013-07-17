@@ -2,13 +2,15 @@ package advancedhud.client.huditems;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.MathHelper;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
-import advancedhud.client.GuiAdvancedHUD;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
+import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
 public class HudItemAir extends HudItem {
@@ -57,8 +59,8 @@ public class HudItemAir extends HudItem {
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.mcProfiler.startSection("air");
-        RenderAssist.bindTexture(GuiAdvancedHUD.field_110324_m);
-        int left = posX+81;
+        RenderAssist.bindTexture(Gui.field_110324_m);
+        int left = posX + 81;
         int top = posY;
 
         if (mc.thePlayer.isInsideOfMaterial(Material.water)
@@ -82,6 +84,12 @@ public class HudItemAir extends HudItem {
     @Override
     public boolean isRenderedInCreative() {
         return false;
+    }
+
+    @Override
+    public GuiScreen getConfigScreen() {
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
+                this);
     }
 
 }

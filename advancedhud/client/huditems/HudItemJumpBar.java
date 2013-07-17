@@ -1,6 +1,8 @@
 package advancedhud.client.huditems;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 
 import org.lwjgl.opengl.GL11;
 
@@ -8,8 +10,8 @@ import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
-import advancedhud.client.GuiAdvancedHUD;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
+import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
 public class HudItemJumpBar extends HudItem {
@@ -58,24 +60,23 @@ public class HudItemJumpBar extends HudItem {
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.mcProfiler.startSection("jumpBar");
-        RenderAssist.bindTexture(GuiAdvancedHUD.field_110324_m);
+        RenderAssist.bindTexture(Gui.field_110324_m);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
+
         float charge = mc.thePlayer.func_110319_bJ();
         final int barWidth = 182;
         int x = posX;
-        int filled = (int)(charge * (float)(barWidth + 1));
+        int filled = (int) (charge * (barWidth + 1));
         int top = posY;
 
         RenderAssist.drawTexturedModalRect(x, top, 0, 84, barWidth, 5);
-        
-        if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration
-                || mc.currentScreen instanceof GuiScreenReposition)
-                && filled == 0)                
+
+        if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition)
+                && filled == 0) {
             filled = 182;
-        
-        if (filled > 0)
-        {
+        }
+
+        if (filled > 0) {
             RenderAssist.drawTexturedModalRect(x, top, 0, 89, filled, 5);
         }
 
@@ -83,8 +84,20 @@ public class HudItemJumpBar extends HudItem {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public boolean isDrawnWhenOnMount() {
+    @Override
+    public boolean shouldDrawOnMount() {
         return true;
+    }
+
+    @Override
+    public boolean shouldDrawAsPlayer() {
+        return false;
+    }
+
+    @Override
+    public GuiScreen getConfigScreen() {
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
+                this);
     }
 
 }

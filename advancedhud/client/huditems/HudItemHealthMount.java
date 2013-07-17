@@ -1,6 +1,8 @@
 package advancedhud.client.huditems;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
@@ -8,8 +10,8 @@ import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
-import advancedhud.client.GuiAdvancedHUD;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
+import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
 public class HudItemHealthMount extends HudItem {
@@ -26,7 +28,7 @@ public class HudItemHealthMount extends HudItem {
 
     @Override
     public Alignment getDefaultAlignment() {
-        return Alignment.BOTTOMRIGHT;
+        return Alignment.BOTTOMCENTER;
     }
 
     @Override
@@ -60,53 +62,72 @@ public class HudItemHealthMount extends HudItem {
         mc.mcProfiler.startSection("healthmount");
         Entity tmp = mc.thePlayer.ridingEntity;
         int right_height = 1;
-        if (tmp == null && (mc.currentScreen instanceof GuiAdvancedHUDConfiguration
-                || mc.currentScreen instanceof GuiScreenReposition)) {
+        if (tmp == null
+                && (mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition)) {
             tmp = new EntityHorse(mc.theWorld);
         }
-        if (!(tmp instanceof EntityLivingBase)) return;
+        if (!(tmp instanceof EntityLivingBase))
+            return;
 
-        RenderAssist.bindTexture(GuiAdvancedHUD.field_110324_m);
-        
+        RenderAssist.bindTexture(Gui.field_110324_m);
+
         boolean unused = false;
-        int left_align = posX+81;
-        
-        EntityLivingBase mount = (EntityLivingBase)tmp;
-        int health = (int)Math.ceil((double)mount.func_110143_aJ());
-        float healthMax = mount.func_110138_aP();
-        int hearts = (int)(healthMax + 0.5F) / 2;
+        int left_align = posX + 81;
 
-        if (hearts > 30) hearts = 30;
-        
+        EntityLivingBase mount = (EntityLivingBase) tmp;
+        int health = (int) Math.ceil(mount.func_110143_aJ());
+        float healthMax = mount.func_110138_aP();
+        int hearts = (int) (healthMax + 0.5F) / 2;
+
+        if (hearts > 30) {
+            hearts = 30;
+        }
+
         final int MARGIN = 52;
         final int BACKGROUND = MARGIN + (unused ? 1 : 0);
         final int HALF = MARGIN + 45;
         final int FULL = MARGIN + 36;
 
-        for (int heart = 0; hearts > 0; heart += 20)
-        {
-            int top = posY+1-right_height;
-            
+        for (int heart = 0; hearts > 0; heart += 20) {
+            int top = posY + 1 - right_height;
+
             int rowCount = Math.min(hearts, 10);
             hearts -= rowCount;
 
-            for (int i = 0; i < rowCount; ++i)
-            {
+            for (int i = 0; i < rowCount; ++i) {
                 int x = left_align - i * 8 - 9;
                 RenderAssist.drawTexturedModalRect(x, top, BACKGROUND, 9, 9, 9);
 
-                if (i * 2 + 1 + heart < health)
+                if (i * 2 + 1 + heart < health) {
                     RenderAssist.drawTexturedModalRect(x, top, FULL, 9, 9, 9);
-                else if (i * 2 + 1 + heart == health)
+                } else if (i * 2 + 1 + heart == health) {
                     RenderAssist.drawTexturedModalRect(x, top, HALF, 9, 9, 9);
+                }
 
-                right_height = (i+1);
+                right_height = i + 1;
             }
         }
     }
 
-    public boolean isDrawnWhenOnMount() {
+    @Override
+    public boolean shouldDrawOnMount() {
         return true;
+    }
+
+    @Override
+    public boolean shouldDrawAsPlayer() {
+        return false;
+    }
+
+    @Override
+    public boolean isRenderedInCreative() {
+        return true;
+    }
+
+    @Override
+    public GuiScreen getConfigScreen() {
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
+                this);
     }
 
 }

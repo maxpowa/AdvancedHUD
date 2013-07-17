@@ -3,6 +3,7 @@ package advancedhud.client.huditems;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.potion.Potion;
@@ -11,6 +12,7 @@ import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
+import advancedhud.client.ui.GuiScreenHudItem;
 
 public class HudItemHealth extends HudItem {
 
@@ -86,7 +88,8 @@ public class HudItemHealth extends HudItem {
             regen = mc.ingameGUI.getUpdateCounter() % 25;
         }
 
-        final int TOP = 9 * (mc.theWorld.getWorldInfo().isHardcoreModeEnabled() ? 5 : 0);
+        final int TOP = 9 * (mc.theWorld.getWorldInfo().isHardcoreModeEnabled() ? 5
+                : 0);
         final int BACKGROUND = highlight ? 25 : 16;
         int MARGIN = 16;
         if (mc.thePlayer.isPotionActive(Potion.poison)) {
@@ -148,7 +151,19 @@ public class HudItemHealth extends HudItem {
         return 2;
     }
 
-    public boolean isDrawnWhenOnMount() {
+    @Override
+    public boolean shouldDrawOnMount() {
         return true;
+    }
+
+    @Override
+    public boolean shouldDrawAsPlayer() {
+        return true;
+    }
+
+    @Override
+    public GuiScreen getConfigScreen() {
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
+                this);
     }
 }

@@ -10,34 +10,33 @@ import advancedhud.api.Alignment;
 import advancedhud.api.HudItem;
 import advancedhud.client.GuiAdvancedHUD;
 
-public class GuiScreenReposition extends GuiScreen
-{
+public class GuiScreenReposition extends GuiScreen {
     protected GuiScreen parentScreen;
     protected HudItem hudItem;
     protected boolean axisAlign;
     protected int oldPosX;
     protected int oldPosY;
 
-    public GuiScreenReposition(GuiScreen parentScreen, HudItem hudItem)
-    {
+    public GuiScreenReposition(GuiScreen parentScreen, HudItem hudItem) {
         this.parentScreen = parentScreen;
         this.hudItem = hudItem;
         oldPosX = hudItem.posX;
         oldPosY = hudItem.posY;
     }
 
+    @Override
     public void handleMouseInput() {
         int mouseX = Mouse.getEventX() * width / mc.displayWidth;
         int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
-        hudItem.posX = (mouseX - hudItem.getWidth() / 2);
-        hudItem.posY = (mouseY - hudItem.getHeight() / 2);
+        hudItem.posX = mouseX - hudItem.getWidth() / 2;
+        hudItem.posY = mouseY - hudItem.getHeight() / 2;
 
         if (axisAlign) {
-            if ((hudItem.posX > oldPosX - 5) && (hudItem.posX < oldPosX + 5)) {
+            if (hudItem.posX > oldPosX - 5 && hudItem.posX < oldPosX + 5) {
                 hudItem.posX = oldPosX;
             }
-            if ((hudItem.posY > oldPosY - 5) && (hudItem.posY < oldPosY + 5)) {
+            if (hudItem.posY > oldPosY - 5 && hudItem.posY < oldPosY + 5) {
                 hudItem.posY = oldPosY;
             }
         }
@@ -47,13 +46,19 @@ public class GuiScreenReposition extends GuiScreen
         super.handleMouseInput();
     }
 
+    @Override
     public void drawScreen(int mouseX, int mouseY, float f) {
         this.drawDefaultBackground();
-        drawCenteredString(fontRenderer, "CLICK to confirm, ESCAPE to cancel, R to reset, CTRL to align", width / 2, 16, 16777215);
-        drawCenteredString(fontRenderer, "Alignment: " + Alignment.calculateAlignment(mouseX, mouseY), width / 2, 26, 16777215);
+        drawCenteredString(
+                fontRenderer,
+                "CLICK to confirm, ESCAPE to cancel, R to reset, CTRL to align",
+                width / 2, 16, 16777215);
+        drawCenteredString(fontRenderer,
+                "Alignment: " + Alignment.calculateAlignment(mouseX, mouseY),
+                width / 2, 26, 16777215);
 
         hudItem.render(GuiAdvancedHUD.partialTicks);
-        
+
         if (axisAlign) {
             int x = oldPosX + hudItem.getWidth() / 2;
             int y = oldPosY + hudItem.getHeight() / 2;
@@ -62,6 +67,7 @@ public class GuiScreenReposition extends GuiScreen
         }
     }
 
+    @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseState) {
         if (mouseState == 0) {
             hudItem.alignment = Alignment.calculateAlignment(mouseX, mouseY);
@@ -70,15 +76,17 @@ public class GuiScreenReposition extends GuiScreen
         SaveController.saveConfig("config");
     }
 
+    @Override
     public void handleKeyboardInput() {
         super.handleKeyboardInput();
 
-        if (Keyboard.getEventKey() == 29)
+        if (Keyboard.getEventKey() == 29) {
             axisAlign = Keyboard.getEventKeyState();
+        }
     }
 
-    protected void keyTyped(char keyChar, int keyCode)
-    {
+    @Override
+    protected void keyTyped(char keyChar, int keyCode) {
         if (keyCode == 1) {
             hudItem.posX = oldPosX;
             hudItem.posY = oldPosY;
