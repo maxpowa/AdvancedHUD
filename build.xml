@@ -7,7 +7,6 @@
 <target name="clean">
 <delete file="${build.dir.development}\mcp\src\minecraft\mcmod.info" />
 <delete dir="${build.dir.development}\mcp\src\minecraft\advancedhud" />
-<delete dir="${build.dir.development}\mcp\src\minecraft\gui" />
 <delete dir="${build.dir.development}\mcp\reobf\minecraft" />
 </target>
 
