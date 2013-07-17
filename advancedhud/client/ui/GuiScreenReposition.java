@@ -1,10 +1,12 @@
 package advancedhud.client.ui;
 
 import net.minecraft.client.gui.GuiScreen;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import advancedhud.api.Alignment;
 
+import advancedhud.SaveController;
+import advancedhud.api.Alignment;
 import advancedhud.api.HudItem;
 import advancedhud.client.GuiAdvancedHUD;
 
@@ -65,6 +67,7 @@ public class GuiScreenReposition extends GuiScreen
             hudItem.alignment = Alignment.calculateAlignment(mouseX, mouseY);
             mc.displayGuiScreen(parentScreen);
         }
+        SaveController.saveConfig("config");
     }
 
     public void handleKeyboardInput() {
@@ -88,5 +91,6 @@ public class GuiScreenReposition extends GuiScreen
             hudItem.fixBounds();
             mc.displayGuiScreen(parentScreen);
         }
+        SaveController.saveConfig("config");
     }
 }

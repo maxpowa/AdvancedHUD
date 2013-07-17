@@ -3,8 +3,6 @@ package advancedhud.client.ui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import advancedhud.api.HUDRegistry;
@@ -29,12 +27,11 @@ public class GuiHudItemButton extends GuiButton {
         if (drawButton) {
             GL11.glPushMatrix();
             FontRenderer fontrenderer = mc.fontRenderer;
-            bind(new ResourceLocation("/gui/gui.png"));
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             boolean hoverState = mouseX >= xPosition && mouseY >= yPosition
                     && mouseX < xPosition + width
                     && mouseY < yPosition + height;
-            for (HudItem huditem : HUDRegistry.getActiveHudItemList()) {
+            for (HudItem huditem : HUDRegistry.getHudItemList()) {
                 if (huditem.getButtonLabel().equalsIgnoreCase(displayString)) {
                     huditem.render(GuiAdvancedHUD.partialTicks);
                 }
@@ -50,10 +47,5 @@ public class GuiHudItemButton extends GuiButton {
             }
 
         }
-    }
-    
-    private void bind(ResourceLocation res)
-    {
-        Minecraft.getMinecraft().func_110434_K().func_110577_a(res);
     }
 }
