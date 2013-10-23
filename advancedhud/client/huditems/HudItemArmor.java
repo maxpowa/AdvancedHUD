@@ -58,7 +58,7 @@ public class HudItemArmor extends HudItem {
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.mcProfiler.startSection("armor");
-        RenderAssist.bindTexture(Gui.field_110324_m);
+        RenderAssist.bindTexture(Gui.icons);
 
         int left = posX;
         int top = posY;

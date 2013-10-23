@@ -11,6 +11,7 @@ import advancedhud.client.huditems.HudItemHealth;
 import advancedhud.client.huditems.HudItemHealthMount;
 import advancedhud.client.huditems.HudItemHotbar;
 import advancedhud.client.huditems.HudItemJumpBar;
+import advancedhud.client.huditems.HudItemRecordDisplay;
 import advancedhud.client.huditems.HudItemTooltips;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
@@ -45,5 +46,6 @@ public class AdvancedHUD {
         HUDRegistry.registerHudItem(new HudItemExperienceBar());
         HUDRegistry.registerHudItem(new HudItemCrosshairs());
         HUDRegistry.registerHudItem(new HudItemTooltips());
+        HUDRegistry.registerHudItem(new HudItemRecordDisplay());
     }
 }

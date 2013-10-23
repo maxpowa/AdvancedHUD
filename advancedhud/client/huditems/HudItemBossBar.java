@@ -92,8 +92,7 @@ public class HudItemBossBar extends HudItem {
                     posX + 91 - fontrenderer.getStringWidth(s) / 2, b0 - 10,
                     16777215);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            Minecraft.getMinecraft().func_110434_K()
-                    .func_110577_a(Gui.field_110324_m);
+            RenderAssist.bindTexture(Gui.icons);
         }
         GL11.glPopMatrix();
         Minecraft.getMinecraft().mcProfiler.endSection();

@@ -69,12 +69,12 @@ public class HudItemHealth extends HudItem {
         }
 
         AttributeInstance attrMaxHealth = mc.thePlayer
-                .func_110148_a(SharedMonsterAttributes.field_111267_a);
+                .getEntityAttribute(SharedMonsterAttributes.maxHealth);
         int health = MathHelper
-                .ceiling_float_int(mc.thePlayer.func_110143_aJ());
+                .ceiling_float_int(mc.thePlayer.getHealth());
         int healthLast = MathHelper.ceiling_float_int(mc.thePlayer.prevHealth);
-        float healthMax = (float) attrMaxHealth.func_111126_e();
-        float absorb = mc.thePlayer.func_110139_bj();
+        float healthMax = (float) attrMaxHealth.getAttributeValue();
+        float absorb = mc.thePlayer.getAbsorptionAmount();
 
         int healthRows = MathHelper
                 .ceiling_float_int((healthMax + absorb) / 2.0F / 10.0F);

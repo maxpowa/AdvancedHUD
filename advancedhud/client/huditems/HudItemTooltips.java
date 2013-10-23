@@ -16,6 +16,9 @@ public class HudItemTooltips extends HudItem {
     private String itemName;
     private String itemRarityColorCode;
     private int stringColor;
+    private float alpha;
+    private int updateCounter;
+    private boolean resetFadeTimer;
 
     @Override
     public String getButtonLabel() {
@@ -63,27 +66,12 @@ public class HudItemTooltips extends HudItem {
 
         mc.mcProfiler.startSection("toolHighlight");
 
-        if (mc.thePlayer != null) {
-            ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
-            String currentName = currentItem == null ? "" : currentItem
-                    .getDisplayName();
-
-            itemName = currentName;
-
-            if (currentItem != null) {
-                itemRarityColorCode = "\u00A7"
-                        + Integer
-                                .toHexString(currentItem.getRarity().rarityColor);
-                stringColor = 16777215;
-            }
-        }
-
         if (mc.currentScreen instanceof GuiAdvancedHUDConfiguration
                 || mc.currentScreen instanceof GuiScreenReposition) {
             itemName = "TOOLTIP";
         }
 
-        if (!itemName.isEmpty()) {
+        if (itemName != null && !itemName.isEmpty()) {
             FontRenderer fontrenderer = mc.fontRenderer;
             int posX = 0;
             if (Alignment.isLeft(alignment)) {
@@ -103,6 +91,42 @@ public class HudItemTooltips extends HudItem {
 
         mc.mcProfiler.endSection();
 
+    }
+    
+    @Override
+    public void tick() {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.thePlayer != null) {
+            ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
+            String currentName = currentItem == null ? "" : currentItem
+                    .getDisplayName();
+
+            resetFadeTimer = !currentName.equals(itemName);
+            itemName = currentName;
+
+            if (currentItem != null) {
+                itemRarityColorCode = "\u00A7"
+                       + Integer.toHexString(currentItem.getRarity().rarityColor);
+                stringColor = 16777215;
+            }
+        }
+        
+        if (resetFadeTimer) {
+            alpha = 1.0F;
+
+            int fadeSpeed = 8 * 20;
+
+            updateCounter = (HUDRegistry.updateCounter + fadeSpeed);
+            resetFadeTimer = false;
+          } else {
+            alpha = ((updateCounter - HUDRegistry.updateCounter) / 20.0F);
+            alpha = Math.min(Math.max(alpha, 0.0F), 1.0F);
+          }
+    }
+    
+    @Override
+    public boolean needsTick() {
+        return true;
     }
 
     @Override

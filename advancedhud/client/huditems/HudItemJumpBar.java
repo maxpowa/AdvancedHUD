@@ -60,10 +60,10 @@ public class HudItemJumpBar extends HudItem {
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.mcProfiler.startSection("jumpBar");
-        RenderAssist.bindTexture(Gui.field_110324_m);
+        RenderAssist.bindTexture(Gui.icons);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        float charge = mc.thePlayer.func_110319_bJ();
+        float charge = mc.thePlayer.getHorseJumpPower();
         final int barWidth = 182;
         int x = posX;
         int filled = (int) (charge * (barWidth + 1));

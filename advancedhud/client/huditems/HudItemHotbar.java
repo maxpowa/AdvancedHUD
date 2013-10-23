@@ -3,9 +3,8 @@ package advancedhud.client.huditems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -19,6 +18,10 @@ import advancedhud.client.ui.GuiScreenHudItem;
 
 public class HudItemHotbar extends HudItem {
 
+    public HudItemHotbar() {
+        super();
+    }
+    
     @Override
     public String getName() {
         return "hotbar";
@@ -59,12 +62,12 @@ public class HudItemHotbar extends HudItem {
         Minecraft mc = HUDRegistry.getMinecraftInstance();
         mc.mcProfiler.startSection("actionBar");
 
+        GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.func_110577_a(new ResourceLocation(
+        RenderAssist.bindTexture(new ResourceLocation(
                 "textures/gui/widgets.png"));
-
         InventoryPlayer inv = mc.thePlayer.inventory;
         RenderAssist.drawTexturedModalRect(posX, posY, 0, 0, 182, 22);
         RenderAssist.drawTexturedModalRect(posX - 1 + inv.currentItem * 20,
@@ -72,51 +75,18 @@ public class HudItemHotbar extends HudItem {
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glPopMatrix();
         RenderHelper.enableGUIStandardItemLighting();
 
         for (int i = 0; i < 9; ++i) {
             int x = posX - 90 + i * 20 + 2;
             int z = posY - 6 - 3;
-            renderInventorySlot(i, x, z, partialTicks, mc);
+            RenderAssist.renderInventorySlot(i, x, z, partialTicks, mc);
         }
 
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         mc.mcProfiler.endSection();
-    }
-
-    /**
-     * Renders the specified item of the inventory slot at the specified
-     * location. Args: slot, x, y, partialTick
-     */
-    protected void renderInventorySlot(int par1, int par2, int par3,
-            float par4, Minecraft mc) {
-        RenderItem itemRenderer = new RenderItem();
-        ItemStack itemstack = mc.thePlayer.inventory.mainInventory[par1];
-        par2 += 91;
-        par3 += 12;
-
-        if (itemstack != null) {
-            float f1 = itemstack.animationsToGo - par4;
-
-            if (f1 > 0.0F) {
-                GL11.glPushMatrix();
-                float f2 = 1.0F + f1 / 5.0F;
-                GL11.glTranslatef(par2 + 8, par3 + 12, 0.0F);
-                GL11.glScalef(1.0F / f2, (f2 + 1.0F) / 2.0F, 1.0F);
-                GL11.glTranslatef(-(par2 + 8), -(par3 + 12), 0.0F);
-            }
-
-            itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer,
-                    mc.func_110434_K(), itemstack, par2, par3);
-
-            if (f1 > 0.0F) {
-                GL11.glPopMatrix();
-            }
-
-            itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer,
-                    mc.func_110434_K(), itemstack, par2, par3);
-        }
     }
 
     @Override
@@ -138,6 +108,16 @@ public class HudItemHotbar extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+    
+    @Override
+    public void loadFromNBT(NBTTagCompound nbt) {
+        super.loadFromNBT(nbt);
+    }
+    
+    @Override
+    public void saveToNBT(NBTTagCompound nbt) {
+        super.saveToNBT(nbt);
     }
 
 }

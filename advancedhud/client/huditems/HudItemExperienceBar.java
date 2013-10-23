@@ -59,7 +59,7 @@ public class HudItemExperienceBar extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        RenderAssist.bindTexture(Gui.field_110324_m);
+        RenderAssist.bindTexture(Gui.icons);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         mc.mcProfiler.startSection("expBar");

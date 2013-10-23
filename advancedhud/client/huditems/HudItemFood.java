@@ -61,7 +61,7 @@ public class HudItemFood extends HudItem {
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.mcProfiler.startSection("food");
-        RenderAssist.bindTexture(Gui.field_110324_m);
+        RenderAssist.bindTexture(Gui.icons);
 
         int left = posX + 81;
         int top = posY;

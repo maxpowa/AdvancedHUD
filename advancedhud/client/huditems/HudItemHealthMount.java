@@ -5,6 +5,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityHorse;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
@@ -69,15 +70,15 @@ public class HudItemHealthMount extends HudItem {
         if (!(tmp instanceof EntityLivingBase))
             return;
 
-        RenderAssist.bindTexture(Gui.field_110324_m);
+        RenderAssist.bindTexture(Gui.icons);
 
         boolean unused = false;
         int left_align = posX + 81;
 
         EntityLivingBase mount = (EntityLivingBase) tmp;
-        int health = (int) Math.ceil(mount.func_110143_aJ());
-        float healthMax = mount.func_110138_aP();
-        int hearts = (int) (healthMax + 0.5F) / 2;
+        int health = (int) Math.ceil(mount.getHealth());
+        double healthMax = mount.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue();
+        int hearts = (int) Math.ceil((((float) healthMax) + 0.5F) / 2F);
 
         if (hearts > 30) {
             hearts = 30;
