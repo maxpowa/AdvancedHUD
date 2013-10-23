@@ -17,6 +17,13 @@ public abstract class HudItem {
     public int posY;
     private int id;
 
+    public HudItem() {
+        alignment = getDefaultAlignment();
+        posX = getDefaultPosX();
+        posY = getDefaultPosY();
+        id = getDefaultID();
+    }
+    
     /**
      * Unique name for the HudItem, only used for NBT saving/loading
      * 
@@ -54,16 +61,27 @@ public abstract class HudItem {
      */
     public abstract int getDefaultID();
 
+    /**
+     * Define custom GuiScreen instances for your own configuration screen.
+     */
     public abstract GuiScreen getConfigScreen();
 
-    public HudItem() {
-        alignment = getDefaultAlignment();
-        posX = getDefaultPosX();
-        posY = getDefaultPosY();
-        id = getDefaultID();
-    }
-
     public abstract void render(float paramFloat);
+
+    /**
+     * Called upon .updateTick(). If you use this, make sure you set<br>
+     * {@link HudItem}.needsTick() to true.
+     */
+    public void tick() {
+        
+    }
+    
+    /**
+     * Set this to true if you require the {@link HudItem}.tick() method to run<br>
+     */
+    public boolean needsTick() {
+        return false;
+    }
 
     public boolean isMoveable() {
         return true;

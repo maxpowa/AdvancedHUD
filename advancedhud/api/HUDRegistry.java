@@ -25,6 +25,7 @@ public class HUDRegistry {
 
     public static int screenWidth;
     public static int screenHeight;
+    public static int updateCounter;
 
     public static void registerHudItem(HudItem hudItem) {
         if (!hudItemList.contains(hudItem)) {

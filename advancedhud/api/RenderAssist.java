@@ -1,7 +1,11 @@
 package advancedhud.api;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -52,7 +56,7 @@ public class RenderAssist {
     }
 
     public static void bindTexture(ResourceLocation res) {
-        Minecraft.getMinecraft().func_110434_K().func_110577_a(res);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(res);
     }
 
     /**
@@ -64,7 +68,86 @@ public class RenderAssist {
      */
     public static void bindTexture(String textureLocation) {
         ResourceLocation res = new ResourceLocation(textureLocation);
-        Minecraft.getMinecraft().func_110434_K().func_110577_a(res);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(res);
+    }
+    
+    /**
+     * Draws a solid color rectangle with the specified coordinates and color.
+     * 
+     * @param x1    First X value
+     * @param x2    Second X value
+     * @param y1    First Y value
+     * @param y2    Second Y Value
+     */
+    public static void drawRect(int x1, int y1, int x2, int y2, int color)
+    {
+        int j1;
+
+        if (x1 < x2)
+        {
+            j1 = x1;
+            x1 = x2;
+            x2 = j1;
+        }
+
+        if (y1 < y2)
+        {
+            j1 = y1;
+            y1 = y2;
+            y2 = j1;
+        }
+
+        float f = (float)(color >> 24 & 255) / 255.0F;
+        float f1 = (float)(color >> 16 & 255) / 255.0F;
+        float f2 = (float)(color >> 8 & 255) / 255.0F;
+        float f3 = (float)(color & 255) / 255.0F;
+        Tessellator tessellator = Tessellator.instance;
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(f1, f2, f3, f);
+        tessellator.startDrawingQuads();
+        tessellator.addVertex((double)x1, (double)y2, 0.0D);
+        tessellator.addVertex((double)x2, (double)y2, 0.0D);
+        tessellator.addVertex((double)x2, (double)y1, 0.0D);
+        tessellator.addVertex((double)x1, (double)y1, 0.0D);
+        tessellator.draw();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    /**
+     * Renders the specified item of the inventory slot at the specified
+     * location.
+     */
+    public static void renderInventorySlot(int slot, int x, int y,
+            float partialTick, Minecraft mc) {
+        RenderItem itemRenderer = new RenderItem();
+        ItemStack itemstack = mc.thePlayer.inventory.mainInventory[slot];
+        x += 91;
+        y += 12;
+
+        if (itemstack != null) {
+            float f1 = itemstack.animationsToGo - partialTick;
+
+            if (f1 > 0.0F) {
+                GL11.glPushMatrix();
+                float f2 = 1.0F + f1 / 5.0F;
+                GL11.glTranslatef(x + 8, y + 12, 0.0F);
+                GL11.glScalef(1.0F / f2, (f2 + 1.0F) / 2.0F, 1.0F);
+                GL11.glTranslatef(-(x + 8), -(y + 12), 0.0F);
+            }
+
+            itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer,
+                    mc.getTextureManager(), itemstack, x, y);
+
+            if (f1 > 0.0F) {
+                GL11.glPopMatrix();
+            }
+
+            itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer,
+                    mc.getTextureManager(), itemstack, x, y);
+        }
     }
 
 }
