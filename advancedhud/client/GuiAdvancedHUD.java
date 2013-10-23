@@ -1,7 +1,5 @@
 package advancedhud.client;
 
-import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.TEXT;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,15 +21,13 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.GuiIngameForge;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.MinecraftForge;
-
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import advancedhud.AdvancedHUD;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
+import advancedhud.api.RenderAssist;
 
 public class GuiAdvancedHUD extends GuiIngameForge {
 
@@ -63,9 +59,8 @@ public class GuiAdvancedHUD extends GuiIngameForge {
 
         for (HudItem huditem : HUDRegistry.getHudItemList()) {
             if (mc.playerController.isInCreativeMode()
-                    && !huditem.isRenderedInCreative()) {
+                    && !huditem.isRenderedInCreative())
                 continue;
-            }
             if (mc.thePlayer.ridingEntity instanceof EntityLivingBase) {
                 if (huditem.shouldDrawOnMount()) {
                     huditem.fixBounds();
@@ -82,22 +77,14 @@ public class GuiAdvancedHUD extends GuiIngameForge {
         
         int width = HUDRegistry.screenWidth;
         int height = HUDRegistry.screenHeight;
-        
-        renderRecordOverlay(width, height, partialTicks);
-
-        ScoreObjective objective = mc.theWorld.getScoreboard().func_96539_a(1);
-        if (renderObjective && objective != null)
-        {
-            this.func_96136_a(objective, height, width, mc.fontRenderer);
-        }
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
 
-        renderChat(width, height);
+        this.renderChat(width, height);
 
-        renderPlayerList(width, height);
+        this.renderPlayerList(width, height);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -207,7 +194,7 @@ public class GuiAdvancedHUD extends GuiIngameForge {
         if (mc.gameSettings.keyBindPlayerList.pressed && (!mc.isIntegratedServerRunning() || handler.playerInfoList.size() > 1 || scoreobjective != null))
         {
             this.mc.mcProfiler.startSection("playerList");
-            List players = handler.playerInfoList;
+            List<?> players = handler.playerInfoList;
             int maxPlayers = handler.currentServerMaxPlayers;
             int rows = maxPlayers;
             int columns = 1;
@@ -258,7 +245,7 @@ public class GuiAdvancedHUD extends GuiIngameForge {
 
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-                    mc.func_110434_K().func_110577_a(Gui.field_110324_m);
+                    RenderAssist.bindTexture(Gui.icons);
                     int pingIndex = 4;
                     int ping = player.responseTime;
                     if (ping < 0) pingIndex = 5;
@@ -274,6 +261,19 @@ public class GuiAdvancedHUD extends GuiIngameForge {
             }
         }
     }
+    
+    @Override
+    protected void renderChat(int width, int height)
+    {
+        mc.mcProfiler.startSection("chat");
+
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, mc.displayHeight/2-40F, 0.0F);
+        persistantChatGUI.drawChat(updateCounter);
+        GL11.glPopMatrix();
+
+        mc.mcProfiler.endSection();
+    }
 
     @Override
     public ScaledResolution getResolution() {
@@ -282,6 +282,23 @@ public class GuiAdvancedHUD extends GuiIngameForge {
 
     @Override
     public void updateTick() {
-        super.updateTick();
+        Profiler profiler = mc.mcProfiler;
+        profiler.startSection("Advanced Hud");
+        
+        if (mc.theWorld != null) {
+            for (HudItem huditem : HUDRegistry.getHudItemList()) {
+                if (mc.playerController.isInCreativeMode()
+                    && !huditem.isRenderedInCreative())
+                    continue;
+                if (huditem.needsTick()) {
+                    huditem.tick();
+                }
+            }
+        }
+
+        updateCounter++;
+        HUDRegistry.updateCounter = this.updateCounter;
+        
+        profiler.endSection();
     }
 }
