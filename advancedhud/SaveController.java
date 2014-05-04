@@ -6,13 +6,14 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ReportedException;
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
 
 public class SaveController {
     protected static final String dirName = Minecraft.getMinecraft().mcDataDir
@@ -84,12 +85,12 @@ public class SaveController {
 
             NBTTagCompound globalNBT = new NBTTagCompound();
             HUDRegistry.writeToNBT(globalNBT);
-            nbt.setCompoundTag("global", globalNBT);
+            nbt.setTag("global", globalNBT);
 
             for (HudItem item : HUDRegistry.getHudItemList()) {
                 NBTTagCompound itemNBT = new NBTTagCompound();
                 item.saveToNBT(itemNBT);
-                nbt.setCompoundTag(item.getName(), itemNBT);
+                nbt.setTag(item.getName(), itemNBT);
             }
 
             CompressedStreamTools.writeCompressed(nbt, fileOutputStream);

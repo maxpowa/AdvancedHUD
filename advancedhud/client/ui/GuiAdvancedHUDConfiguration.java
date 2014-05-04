@@ -1,14 +1,17 @@
 package advancedhud.client.ui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.input.Keyboard;
 
 import advancedhud.SaveController;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
+
 
 public class GuiAdvancedHUDConfiguration extends GuiScreen {
 
@@ -98,7 +101,7 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
                 GuiButton guibutton = (GuiButton) buttonList.get(l);
 
                 if (guibutton.mousePressed(mc, i, j)) {
-                    mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+                    mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
                     HudItem hudItem = HUDRegistry.getHudItemByID(guibutton.id);
                     if (hudItem != null) {
                         Minecraft.getMinecraft().displayGuiScreen(

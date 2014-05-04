@@ -16,8 +16,9 @@ import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiScreenHudItem;
 
-public class HudItemHotbar extends HudItem {
 
+public class HudItemHotbar extends HudItem {
+    
     public HudItemHotbar() {
         super();
     }
@@ -34,26 +35,36 @@ public class HudItemHotbar extends HudItem {
 
     @Override
     public Alignment getDefaultAlignment() {
+        if (rotated)
+            return Alignment.CENTERRIGHT;
         return Alignment.BOTTOMCENTER;
     }
 
     @Override
     public int getDefaultPosX() {
-        return HUDRegistry.screenWidth / 2 - 91;
+        if (rotated)
+            return HUDRegistry.screenWidth - getWidth();
+        return (HUDRegistry.screenWidth-getWidth())/2;
     }
 
     @Override
     public int getDefaultPosY() {
-        return HUDRegistry.screenHeight - 22;
+        if (rotated)
+            return (HUDRegistry.screenHeight-getHeight())/2;
+        return HUDRegistry.screenHeight - getHeight();
     }
 
     @Override
     public int getWidth() {
+        if (rotated)
+            return 22;
         return 182;
     }
 
     @Override
     public int getHeight() {
+        if (rotated)
+            return 182;
         return 22;
     }
 
@@ -69,6 +80,8 @@ public class HudItemHotbar extends HudItem {
         RenderAssist.bindTexture(new ResourceLocation(
                 "textures/gui/widgets.png"));
         InventoryPlayer inv = mc.thePlayer.inventory;
+        if (rotated)
+            GL11.glRotatef(-90, posX, posY, 0);
         RenderAssist.drawTexturedModalRect(posX, posY, 0, 0, 182, 22);
         RenderAssist.drawTexturedModalRect(posX - 1 + inv.currentItem * 20,
                 posY - 1, 0, 22, 24, 22);
@@ -79,8 +92,15 @@ public class HudItemHotbar extends HudItem {
         RenderHelper.enableGUIStandardItemLighting();
 
         for (int i = 0; i < 9; ++i) {
-            int x = posX - 90 + i * 20 + 2;
-            int z = posY - 6 - 3;
+            int x = 0;
+            int z = 0;
+            if (rotated) {
+                z = posY - 90 + i * 20 + 2;
+                x = posX - 6 - 3;
+            } else {
+                x = posX - 90 + i * 20 + 2;
+                z = posY - 6 - 3;
+            }
             RenderAssist.renderInventorySlot(i, x, z, partialTicks, mc);
         }
 
@@ -118,6 +138,12 @@ public class HudItemHotbar extends HudItem {
     @Override
     public void saveToNBT(NBTTagCompound nbt) {
         super.saveToNBT(nbt);
+    }
+    
+    public void rotate() {
+        super.rotate();
+        this.posX = getDefaultPosX();
+        this.posY = getDefaultPosY();
     }
 
 }

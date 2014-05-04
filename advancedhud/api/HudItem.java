@@ -16,6 +16,7 @@ public abstract class HudItem {
     public int posX;
     public int posY;
     private int id;
+    public boolean rotated = false;
 
     public HudItem() {
         alignment = getDefaultAlignment();
@@ -67,6 +68,10 @@ public abstract class HudItem {
     public abstract GuiScreen getConfigScreen();
 
     public abstract void render(float paramFloat);
+    
+    public void rotate() {
+        this.rotated = !this.rotated;
+    }
 
     /**
      * Called upon .updateTick(). If you use this, make sure you set<br>
@@ -126,6 +131,11 @@ public abstract class HudItem {
         } else {
             id = getDefaultID();
         }
+        if (nbt.hasKey("rotated")) {
+            rotated = nbt.getBoolean("rotated");
+        } else {
+            rotated = false;
+        }
     }
 
     public void saveToNBT(NBTTagCompound nbt) {
@@ -133,6 +143,7 @@ public abstract class HudItem {
         nbt.setInteger("posY", posY);
         nbt.setString("alignment", alignment.toString());
         nbt.setInteger("id", id);
+        nbt.setBoolean("rotated", rotated);
     }
 
     public boolean shouldDrawOnMount() {

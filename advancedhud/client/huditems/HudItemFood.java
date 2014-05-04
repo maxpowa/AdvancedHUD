@@ -2,16 +2,17 @@ package advancedhud.client.huditems;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.FoodStats;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiScreenHudItem;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.FoodStats;
 
 public class HudItemFood extends HudItem {
 
@@ -125,6 +126,12 @@ public class HudItemFood extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

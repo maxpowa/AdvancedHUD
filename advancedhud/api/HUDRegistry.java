@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.crash.CallableMinecraftVersion;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -64,7 +63,7 @@ public class HUDRegistry {
     }
 
     public static String getMinecraftVersion() {
-        return new CallableMinecraftVersion(null).minecraftVersion();
+        return "@MCVERSION@";
     }
 
     public static HudItem getHudItemByID(int id) {
@@ -77,6 +76,7 @@ public class HUDRegistry {
 
     public static void resetAllDefaults() {
         for (HudItem huditem : HUDRegistry.getHudItemList()) {
+            huditem.rotated = false;
             huditem.alignment = huditem.getDefaultAlignment();
             huditem.posX = huditem.getDefaultPosX();
             huditem.posY = huditem.getDefaultPosY();

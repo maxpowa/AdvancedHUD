@@ -14,6 +14,7 @@ import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
+
 public class HudItemJumpBar extends HudItem {
 
     @Override
@@ -98,6 +99,12 @@ public class HudItemJumpBar extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

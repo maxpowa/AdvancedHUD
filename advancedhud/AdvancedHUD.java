@@ -13,12 +13,10 @@ import advancedhud.client.huditems.HudItemHotbar;
 import advancedhud.client.huditems.HudItemJumpBar;
 import advancedhud.client.huditems.HudItemRecordDisplay;
 import advancedhud.client.huditems.HudItemTooltips;
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = "AdvancedHUD", name = "AdvancedHUD", version = "Version [@VERSION@] for @MCVERSION@")
 public class AdvancedHUD {
@@ -28,8 +26,8 @@ public class AdvancedHUD {
 
     @EventHandler
     public void onInit(FMLInitializationEvent event) {
-        KeyBindingRegistry.registerKeyBinding(new KeyRegister());
-        TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
+        FMLCommonHandler.instance().bus().register(new TickHandler());
+        FMLCommonHandler.instance().bus().register(new KeyRegister());
 
         registerHUDItems();
     }

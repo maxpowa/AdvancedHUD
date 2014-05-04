@@ -10,6 +10,7 @@ import advancedhud.api.Alignment;
 import advancedhud.api.HudItem;
 import advancedhud.client.GuiAdvancedHUD;
 
+
 public class GuiScreenReposition extends GuiScreen {
     protected GuiScreen parentScreen;
     protected HudItem hudItem;
@@ -50,10 +51,10 @@ public class GuiScreenReposition extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float f) {
         this.drawDefaultBackground();
         drawCenteredString(
-                fontRenderer,
+                mc.fontRenderer,
                 "CLICK to confirm, ESCAPE to cancel, R to reset, CTRL to align",
                 width / 2, 16, 16777215);
-        drawCenteredString(fontRenderer,
+        drawCenteredString(mc.fontRenderer,
                 "Alignment: " + Alignment.calculateAlignment(mouseX, mouseY),
                 width / 2, 26, 16777215);
 
@@ -93,6 +94,7 @@ public class GuiScreenReposition extends GuiScreen {
             mc.displayGuiScreen(parentScreen);
         }
         if (keyCode == 19) {
+            hudItem.rotated = false;
             hudItem.posX = hudItem.getDefaultPosX();
             hudItem.posY = hudItem.getDefaultPosY();
             hudItem.alignment = hudItem.getDefaultAlignment();

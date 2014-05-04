@@ -2,17 +2,18 @@ package advancedhud.client.huditems;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeInstance;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiScreenHudItem;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.MathHelper;
 
 public class HudItemHealth extends HudItem {
 
@@ -68,7 +69,7 @@ public class HudItemHealth extends HudItem {
             highlight = false;
         }
 
-        AttributeInstance attrMaxHealth = mc.thePlayer
+        IAttributeInstance attrMaxHealth = mc.thePlayer
                 .getEntityAttribute(SharedMonsterAttributes.maxHealth);
         int health = MathHelper
                 .ceiling_float_int(mc.thePlayer.getHealth());
@@ -165,5 +166,11 @@ public class HudItemHealth extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 }

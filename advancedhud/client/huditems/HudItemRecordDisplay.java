@@ -12,6 +12,7 @@ import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.client.ui.GuiScreenHudItem;
 
+
 public class HudItemRecordDisplay extends HudItem {
 
     private int recordPlayingUpFor;
@@ -103,6 +104,12 @@ public class HudItemRecordDisplay extends HudItem {
         if (recordPlayingUpFor > 0) {
             --recordPlayingUpFor;
         }
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

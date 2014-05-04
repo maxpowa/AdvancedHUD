@@ -1,9 +1,10 @@
 package advancedhud.client.ui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
+import advancedhud.client.huditems.HudItemHotbar;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 
 public class GuiScreenHudItem extends GuiScreen {
 
@@ -21,6 +22,10 @@ public class GuiScreenHudItem extends GuiScreen {
         buttonList.clear();
         buttonList.add(new GuiButton(-1, HUDRegistry.screenWidth - 30, 10, 20,
                 20, "X"));
+        if (hudItem instanceof HudItemHotbar) {
+            buttonList.add(new GuiButton(100, HUDRegistry.screenWidth/2-100, 
+                    HUDRegistry.screenHeight/2, 200, 20, "Rotate?"));
+        }
     }
 
     @Override
@@ -47,6 +52,8 @@ public class GuiScreenHudItem extends GuiScreen {
     protected void actionPerformed(GuiButton par1GuiButton) {
         if (par1GuiButton.id == -1) {
             mc.displayGuiScreen(parentScreen);
+        } else if (par1GuiButton.id == 100) {
+            hudItem.rotate();
         }
         super.actionPerformed(par1GuiButton);
     }

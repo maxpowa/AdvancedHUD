@@ -1,10 +1,5 @@
 package advancedhud.client.huditems;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.MathHelper;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
@@ -12,6 +7,11 @@ import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.MathHelper;
 
 public class HudItemAir extends HudItem {
 
@@ -90,6 +90,12 @@ public class HudItemAir extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

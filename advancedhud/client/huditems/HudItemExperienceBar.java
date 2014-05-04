@@ -14,6 +14,7 @@ import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
+
 public class HudItemExperienceBar extends HudItem {
 
     @Override
@@ -84,7 +85,7 @@ public class HudItemExperienceBar extends HudItem {
 
         mc.mcProfiler.endSection();
 
-        if (mc.playerController.func_78763_f()
+        if (mc.playerController.isNotCreative()
                 && mc.thePlayer.experienceLevel > 0) {
             mc.mcProfiler.startSection("expLevel");
             boolean flag1 = false;
@@ -111,6 +112,12 @@ public class HudItemExperienceBar extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

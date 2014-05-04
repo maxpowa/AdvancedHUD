@@ -1,15 +1,15 @@
 package advancedhud.client.huditems;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.item.ItemStack;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.item.ItemStack;
 
 public class HudItemTooltips extends HudItem {
 
@@ -105,8 +105,7 @@ public class HudItemTooltips extends HudItem {
             itemName = currentName;
 
             if (currentItem != null) {
-                itemRarityColorCode = "\u00A7"
-                       + Integer.toHexString(currentItem.getRarity().rarityColor);
+                itemRarityColorCode = currentItem.getRarity().rarityColor.toString();
                 stringColor = 16777215;
             }
         }
@@ -138,6 +137,12 @@ public class HudItemTooltips extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

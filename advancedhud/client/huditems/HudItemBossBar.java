@@ -16,6 +16,7 @@ import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
+
 public class HudItemBossBar extends HudItem {
 
     @Override
@@ -64,11 +65,11 @@ public class HudItemBossBar extends HudItem {
         mc.mcProfiler.startSection("bossHealth");
         GL11.glPushMatrix();
         RenderAssist.bindTexture("textures/gui/icons.png");
-        if (BossStatus.bossName != null && BossStatus.statusBarLength > 0
+        if (BossStatus.bossName != null && BossStatus.statusBarTime > 0
                 || mc.currentScreen instanceof GuiAdvancedHUDConfiguration
                 || mc.currentScreen instanceof GuiScreenReposition) {
             if (BossStatus.bossName != null) {
-                --BossStatus.statusBarLength;
+                --BossStatus.statusBarTime;
             }
             FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
 
@@ -102,6 +103,12 @@ public class HudItemBossBar extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

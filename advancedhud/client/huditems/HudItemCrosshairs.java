@@ -12,6 +12,7 @@ import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiScreenHudItem;
 
+
 public class HudItemCrosshairs extends HudItem {
 
     @Override
@@ -81,6 +82,12 @@ public class HudItemCrosshairs extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
                 this);
+    }
+
+    @Override
+    public void rotate() {
+        // TODO Auto-generated method stub
+        
     }
 }
 

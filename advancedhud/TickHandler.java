@@ -1,49 +1,36 @@
 package advancedhud;
 
-import java.util.EnumSet;
-
-import net.minecraft.client.Minecraft;
 import advancedhud.api.HUDRegistry;
 import advancedhud.client.GuiAdvancedHUD;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import net.minecraft.client.Minecraft;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Type;
 
-public class TickHandler implements ITickHandler {
+public class TickHandler {
 
     private boolean ticked = false;
     private boolean firstload = true;
 
-    @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
-        // Do nothing.
-    }
-
-    @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-        if (!ticked && Minecraft.getMinecraft().ingameGUI != null) {
-            Minecraft.getMinecraft().ingameGUI = new GuiAdvancedHUD(
-                    Minecraft.getMinecraft());
-            ticked = true;
-        }
-        if (firstload && Minecraft.getMinecraft() != null) {
-            if (!SaveController.loadConfig("config")) {
-                HUDRegistry.checkForResize();
-                HUDRegistry.resetAllDefaults();
-                SaveController.saveConfig("config");
+    @SubscribeEvent
+    public void RenderTickEvent(RenderTickEvent event) {
+        if ((event.type == Type.RENDER || event.type == Type.CLIENT) && event.phase == Phase.END) {
+            if (!ticked && Minecraft.getMinecraft().ingameGUI != null) {
+                Minecraft.getMinecraft().ingameGUI = new GuiAdvancedHUD(
+                        Minecraft.getMinecraft());
+                ticked = true;
             }
-            firstload = false;
-
+            if (firstload && Minecraft.getMinecraft() != null) {
+                if (!SaveController.loadConfig("config")) {
+                    HUDRegistry.checkForResize();
+                    HUDRegistry.resetAllDefaults();
+                    SaveController.saveConfig("config");
+                }
+                firstload = false;
+    
+            }
         }
-    }
-
-    @Override
-    public EnumSet<TickType> ticks() {
-        return EnumSet.of(TickType.CLIENT, TickType.RENDER);
-    }
-
-    @Override
-    public String getLabel() {
-        return "AdvancedHUD";
     }
 
 }

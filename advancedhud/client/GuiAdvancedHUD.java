@@ -7,7 +7,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.scoreboard.Score;
@@ -16,18 +18,19 @@ import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.Direction;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.GuiIngameForge;
+
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import advancedhud.AdvancedHUD;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class GuiAdvancedHUD extends GuiIngameForge {
 
@@ -96,6 +99,7 @@ public class GuiAdvancedHUD extends GuiIngameForge {
     protected void renderHUDText(int width, int height)
     {
         mc.mcProfiler.startSection("forgeHudText");
+        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
         ArrayList<String> left = new ArrayList<String>();
         ArrayList<String> right = new ArrayList<String>();
 
@@ -104,11 +108,11 @@ public class GuiAdvancedHUD extends GuiIngameForge {
             long time = mc.theWorld.getTotalWorldTime();
             if (time >= 120500L)
             {
-                right.add(StatCollector.translateToLocal("demo.demoExpired"));
+                right.add(I18n.format("demo.demoExpired"));
             }
             else
             {
-                right.add(String.format(StatCollector.translateToLocal("demo.remainingTime"), StringUtils.ticksToElapsedTime((int)(120500L - time))));
+                right.add(I18n.format("demo.remainingTime", StringUtils.ticksToElapsedTime((int)(120500L - time))));
             }
         }
 
@@ -159,15 +163,20 @@ public class GuiAdvancedHUD extends GuiIngameForge {
             }
 
             left.add(String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", mc.thePlayer.capabilities.getWalkSpeed(), mc.thePlayer.capabilities.getFlySpeed(), mc.thePlayer.onGround, mc.theWorld.getHeightValue(x, z)));
-            right.add(null);
-            for (String s : FMLCommonHandler.instance().getBrandings().subList(1, FMLCommonHandler.instance().getBrandings().size()))
+            if (mc.entityRenderer != null && mc.entityRenderer.isShaderActive())
             {
-                right.add(s);
+                left.add(String.format("shader: %s", mc.entityRenderer.getShaderGroup().getShaderGroupName()));
+            }
+
+            right.add(null);
+            for (String brand : FMLCommonHandler.instance().getBrandings(false))
+            {
+                right.add(brand);
             }
             GL11.glPopMatrix();
             mc.mcProfiler.endSection();
         }
-        
+
         for (int x = 0; x < left.size(); x++)
         {
             String msg = left.get(x);
@@ -189,9 +198,9 @@ public class GuiAdvancedHUD extends GuiIngameForge {
     protected void renderPlayerList(int width, int height)
     {
         ScoreObjective scoreobjective = this.mc.theWorld.getScoreboard().func_96539_a(0);
-        NetClientHandler handler = mc.thePlayer.sendQueue;
+        NetHandlerPlayClient handler = mc.thePlayer.sendQueue;
 
-        if (mc.gameSettings.keyBindPlayerList.pressed && (!mc.isIntegratedServerRunning() || handler.playerInfoList.size() > 1 || scoreobjective != null))
+        if (mc.gameSettings.keyBindPlayerList.isPressed() && (!mc.isIntegratedServerRunning() || handler.playerInfoList.size() > 1 || scoreobjective != null))
         {
             this.mc.mcProfiler.startSection("playerList");
             List<?> players = handler.playerInfoList;

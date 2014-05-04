@@ -10,6 +10,7 @@ import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.client.GuiAdvancedHUD;
 
+
 public class GuiHudItemButton extends GuiButton {
 
     public GuiHudItemButton(int id, int xPosition, int yPosition, int width,
@@ -25,7 +26,7 @@ public class GuiHudItemButton extends GuiButton {
 
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-        if (drawButton) {
+        if (this.visible) {
             GL11.glPushMatrix();
             FontRenderer fontrenderer = mc.fontRenderer;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
