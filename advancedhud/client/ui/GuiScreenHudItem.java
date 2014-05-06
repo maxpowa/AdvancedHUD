@@ -1,10 +1,11 @@
 package advancedhud.client.ui;
 
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
-import advancedhud.client.huditems.HudItemHotbar;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import advancedhud.AdvancedHUD;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+import advancedhud.client.huditems.HudItemCrosshairs;
 
 public class GuiScreenHudItem extends GuiScreen {
 
@@ -20,11 +21,12 @@ public class GuiScreenHudItem extends GuiScreen {
     @Override
     public void initGui() {
         buttonList.clear();
-        buttonList.add(new GuiButton(-1, HUDRegistry.screenWidth - 30, 10, 20,
-                20, "X"));
-        if (hudItem instanceof HudItemHotbar) {
-            buttonList.add(new GuiButton(100, HUDRegistry.screenWidth/2-100, 
-                    HUDRegistry.screenHeight/2, 200, 20, "Rotate?"));
+        buttonList.add(new GuiButton(-1, HUDRegistry.screenWidth - 30, 10, 20, 20, "X"));
+        if (hudItem.canRotate()) {
+            buttonList.add(new GuiButton(100, HUDRegistry.screenWidth / 2 - 50, HUDRegistry.screenHeight / 2 - 10, 100, 20, "Rotate?"));
+        } 
+        if (hudItem instanceof HudItemCrosshairs) {
+            buttonList.add(new GuiButtonIconGrid(3320, HUDRegistry.screenWidth / 2 - 64, 40, "Crosshair Selector"));
         }
     }
 
@@ -36,8 +38,7 @@ public class GuiScreenHudItem extends GuiScreen {
             initGui();
         }
 
-        this.drawCenteredString(mc.fontRenderer, hudItem.getButtonLabel(),
-                HUDRegistry.screenWidth / 2, 10, 0xFFFFFF);
+        this.drawCenteredString(mc.fontRenderer, hudItem.getButtonLabel(), HUDRegistry.screenWidth / 2, 10, 0xFFFFFF);
         super.drawScreen(par1, par2, par3);
     }
 
@@ -55,6 +56,7 @@ public class GuiScreenHudItem extends GuiScreen {
         } else if (par1GuiButton.id == 100) {
             hudItem.rotate();
         }
+        AdvancedHUD.log.info("Clicked button " + par1GuiButton.id);
         super.actionPerformed(par1GuiButton);
     }
 
