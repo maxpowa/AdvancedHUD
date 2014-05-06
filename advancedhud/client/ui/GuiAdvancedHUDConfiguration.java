@@ -12,10 +12,10 @@ import advancedhud.SaveController;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 
-
 public class GuiAdvancedHUDConfiguration extends GuiScreen {
 
     private static boolean asMount = false;
+    private static boolean help = true;
 
     @Override
     public void initGui() {
@@ -26,17 +26,12 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
     @SuppressWarnings("unchecked")
     private void addButtons() {
         buttonList.clear();
-        buttonList.add(new GuiButton(-1, HUDRegistry.screenWidth - 30, 10, 20,
-                20, "X"));
+        buttonList.add(new GuiButton(-1, HUDRegistry.screenWidth - 30, 10, 20, 20, "X"));
         for (HudItem huditem : HUDRegistry.getHudItemList()) {
             if (asMount && huditem.shouldDrawOnMount()) {
-                buttonList.add(new GuiHudItemButton(huditem.getDefaultID(),
-                        huditem.posX, huditem.posY, huditem.getWidth(), huditem
-                                .getHeight(), huditem.getButtonLabel()));
+                buttonList.add(new GuiHudItemButton(huditem.getDefaultID(), huditem.posX, huditem.posY, huditem.getWidth(), huditem.getHeight(), huditem.getButtonLabel()));
             } else if (!asMount && huditem.shouldDrawAsPlayer()) {
-                buttonList.add(new GuiHudItemButton(huditem.getDefaultID(),
-                        huditem.posX, huditem.posY, huditem.getWidth(), huditem
-                                .getHeight(), huditem.getButtonLabel()));
+                buttonList.add(new GuiHudItemButton(huditem.getDefaultID(), huditem.posX, huditem.posY, huditem.getWidth(), huditem.getHeight(), huditem.getButtonLabel()));
             }
         }
     }
@@ -49,14 +44,11 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
             initGui();
         }
 
-        drawCenteredString(mc.fontRenderer,
-                "LEFT CLICK to reposition, RIGHT CLICK to change settings",
-                width / 2, 17, 16777215);
-        drawCenteredString(mc.fontRenderer, "ESCAPE to cancel, R to reset all",
-                width / 2, 27, 16777215);
-        drawCenteredString(mc.fontRenderer, "M to change to"
-                + (asMount ? " player " : " mount ") + "HUD", width / 2, 37,
-                16777215);
+        if (help) {
+            drawCenteredString(mc.fontRenderer, "LEFT CLICK to reposition, RIGHT CLICK to change settings", width / 2, 17, 0xFFFFFF);
+            drawCenteredString(mc.fontRenderer, "ESCAPE to cancel, R to reset all", width / 2, 27, 0xFFFFFF);
+            drawCenteredString(mc.fontRenderer, "M to change to" + (asMount ? " player " : " mount ") + "HUD", width / 2, 37, 0xFFFFFF);
+        }
 
         super.drawScreen(par1, par2, par3);
     }
@@ -70,10 +62,11 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
         if (par2 == 19) {
             HUDRegistry.resetAllDefaults();
             initGui();
-        }
-        if (par2 == Keyboard.KEY_M) {
+        } else if (par2 == Keyboard.KEY_M) {
             asMount = !asMount;
             initGui();
+        } else if (par2 == Keyboard.KEY_F1) {
+            help = !help;
         }
         SaveController.saveConfig("config");
         super.keyTyped(par1, par2);
@@ -83,12 +76,12 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
     protected void actionPerformed(GuiButton par1GuiButton) {
         if (par1GuiButton.id == -1) {
             mc.displayGuiScreen(null);
+            SaveController.saveConfig("config");
         }
         if (par1GuiButton instanceof GuiHudItemButton) {
             HudItem hudItem = HUDRegistry.getHudItemByID(par1GuiButton.id);
             if (hudItem != null && hudItem.isMoveable()) {
-                Minecraft.getMinecraft().displayGuiScreen(
-                        new GuiScreenReposition(this, hudItem));
+                Minecraft.getMinecraft().displayGuiScreen(new GuiScreenReposition(this, hudItem));
             }
         }
         super.actionPerformed(par1GuiButton);
@@ -104,8 +97,7 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
                     mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
                     HudItem hudItem = HUDRegistry.getHudItemByID(guibutton.id);
                     if (hudItem != null) {
-                        Minecraft.getMinecraft().displayGuiScreen(
-                                hudItem.getConfigScreen());
+                        Minecraft.getMinecraft().displayGuiScreen(hudItem.getConfigScreen());
                     }
                 }
             }
