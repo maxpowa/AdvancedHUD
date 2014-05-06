@@ -6,18 +6,16 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ReportedException;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
 
 public class SaveController {
-    protected static final String dirName = Minecraft.getMinecraft().mcDataDir
-            + File.separator + "config" + File.separator + "AdvancedHud";
+    protected static final String dirName = Minecraft.getMinecraft().mcDataDir + File.separator + "config" + File.separator + "AdvancedHud";
     protected static File dir = new File(dirName);
 
     public static boolean loadConfig(String name) {
@@ -25,26 +23,22 @@ public class SaveController {
     }
 
     public static boolean loadConfig(String name, String dirName) {
-        System.out.print("[AdvancedHUD] Loading");
-
         if (dirName != null) {
             HUDRegistry.getMinecraftInstance();
-            dir = new File(Minecraft.getMinecraft().mcDataDir + File.separator
-                    + dirName);
+            dir = new File(Minecraft.getMinecraft().mcDataDir + File.separator + dirName);
         }
 
         String fileName = name + ".dat";
         File file = new File(dir, fileName);
 
         if (!file.exists()) {
-            System.out.println(" canceled, file does not exist.");
+            AdvancedHUD.log.warn("Config load canceled, file does not exist. This is normal for first run.");
             return false;
         } else {
-            System.out.println(" successful.");
+            AdvancedHUD.log.info("Config load successful.");
         }
         try {
-            NBTTagCompound nbt = CompressedStreamTools
-                    .readCompressed(new FileInputStream(file));
+            NBTTagCompound nbt = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
             HUDRegistry.readFromNBT(nbt.getCompoundTag("global"));
 
@@ -63,18 +57,15 @@ public class SaveController {
     }
 
     public static void saveConfig(String name, String dirName) {
-        System.out.println("[AdvancedHUD] Saving...");
+        AdvancedHUD.log.info("Saving...");
 
         if (dirName != null) {
             HUDRegistry.getMinecraftInstance();
-            dir = new File(Minecraft.getMinecraft().mcDataDir + File.separator
-                    + dirName);
+            dir = new File(Minecraft.getMinecraft().mcDataDir + File.separator + dirName);
         }
 
         if (!dir.exists() && !dir.mkdirs())
-            throw new ReportedException(new CrashReport(
-                    "Unable to create the configuration directories",
-                    new Throwable()));
+            throw new ReportedException(new CrashReport("Unable to create the configuration directories", new Throwable()));
 
         String fileName = name + ".dat";
         File file = new File(dir, fileName);
@@ -96,8 +87,7 @@ public class SaveController {
             CompressedStreamTools.writeCompressed(nbt, fileOutputStream);
             fileOutputStream.close();
         } catch (IOException e) {
-            throw new ReportedException(new CrashReport(
-                    "An error occured while saving", new Throwable()));
+            throw new ReportedException(new CrashReport("An error occured while saving", new Throwable()));
         }
     }
 

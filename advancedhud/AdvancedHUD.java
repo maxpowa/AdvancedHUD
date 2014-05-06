@@ -1,5 +1,7 @@
 package advancedhud;
 
+import org.apache.logging.log4j.Logger;
+
 import advancedhud.api.HUDRegistry;
 import advancedhud.client.huditems.HudItemAir;
 import advancedhud.client.huditems.HudItemArmor;
@@ -17,13 +19,19 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = "AdvancedHUD", name = "AdvancedHUD", version = "Version [@VERSION@] for @MCVERSION@")
 public class AdvancedHUD {
 
     public static String MC_VERSION = "@MCVERSION@";
     public static String ADVHUD_VERSION = "@VERSION@";
+    public static Logger log;
 
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        log = event.getModLog();
+    }
     @EventHandler
     public void onInit(FMLInitializationEvent event) {
         FMLCommonHandler.instance().bus().register(new TickHandler());
@@ -45,5 +53,6 @@ public class AdvancedHUD {
         HUDRegistry.registerHudItem(new HudItemCrosshairs());
         HUDRegistry.registerHudItem(new HudItemTooltips());
         HUDRegistry.registerHudItem(new HudItemRecordDisplay());
+        HUDRegistry.setInitialLoadComplete(true);
     }
 }

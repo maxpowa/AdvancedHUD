@@ -35,12 +35,10 @@ public enum Alignment {
     }
 
     public static Alignment calculateAlignment(int x, int y) {
-        return calculateAlignment(x, y, HUDRegistry.screenWidth,
-                HUDRegistry.screenHeight);
+        return calculateAlignment(x, y, HUDRegistry.screenWidth, HUDRegistry.screenHeight);
     }
 
-    public static Alignment calculateAlignment(int x, int y, int screenWidth,
-            int screenHeight) {
+    public static Alignment calculateAlignment(int x, int y, int screenWidth, int screenHeight) {
         x = (int) (3.0F / screenWidth * x);
         y = (int) (3.0F / screenHeight * y);
 
@@ -67,32 +65,26 @@ public enum Alignment {
     }
 
     public static boolean isTop(Alignment alignment) {
-        return alignment == TOPLEFT || alignment == TOPCENTER
-                || alignment == TOPRIGHT;
+        return alignment == TOPLEFT || alignment == TOPCENTER || alignment == TOPRIGHT;
     }
 
     public static boolean isVerticalCenter(Alignment alignment) {
-        return alignment == CENTERLEFT || alignment == CENTERCENTER
-                || alignment == CENTERRIGHT;
+        return alignment == CENTERLEFT || alignment == CENTERCENTER || alignment == CENTERRIGHT;
     }
 
     public static boolean isBottom(Alignment alignment) {
-        return alignment == BOTTOMLEFT || alignment == BOTTOMCENTER
-                || alignment == BOTTOMRIGHT;
+        return alignment == BOTTOMLEFT || alignment == BOTTOMCENTER || alignment == BOTTOMRIGHT;
     }
 
     public static boolean isLeft(Alignment alignment) {
-        return alignment == TOPLEFT || alignment == CENTERLEFT
-                || alignment == BOTTOMLEFT;
+        return alignment == TOPLEFT || alignment == CENTERLEFT || alignment == BOTTOMLEFT;
     }
 
     public static boolean isHorizontalCenter(Alignment alignment) {
-        return alignment == TOPCENTER || alignment == CENTERCENTER
-                || alignment == BOTTOMCENTER;
+        return alignment == TOPCENTER || alignment == CENTERCENTER || alignment == BOTTOMCENTER;
     }
 
     public static boolean isRight(Alignment alignment) {
-        return alignment == TOPRIGHT || alignment == CENTERRIGHT
-                || alignment == BOTTOMRIGHT;
+        return alignment == TOPRIGHT || alignment == CENTERRIGHT || alignment == BOTTOMRIGHT;
     }
 }

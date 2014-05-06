@@ -7,6 +7,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTTagCompound;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * 
  * Register your HUD elements with this.
@@ -19,14 +22,18 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class HUDRegistry {
     protected static List<HudItem> hudItemList = new ArrayList<HudItem>();
-
+    protected static boolean initialLoadComplete = false;
     protected static List<HudItem> hudItemListActive = new ArrayList<HudItem>();
 
+    private static Logger log = LogManager.getLogger("AdvancedHUD-API");
     public static int screenWidth;
     public static int screenHeight;
     public static int updateCounter;
 
     public static void registerHudItem(HudItem hudItem) {
+        if (hudItem.getDefaultID() <= 25 && initialLoadComplete) {
+            log.info("Rejecting " + hudItem.getName() + " due to invalid ID.");
+        }
         if (!hudItemList.contains(hudItem)) {
             hudItemList.add(hudItem);
             if (hudItem.isEnabledByDefault()) {
@@ -40,8 +47,7 @@ public class HUDRegistry {
     }
 
     public static void enableHudItem(HudItem hudItem) {
-        if (hudItemList.contains(hudItem)
-                && !hudItemListActive.contains(hudItem)) {
+        if (hudItemList.contains(hudItem) && !hudItemListActive.contains(hudItem)) {
             hudItemListActive.add(hudItem);
         }
     }
@@ -76,7 +82,7 @@ public class HUDRegistry {
 
     public static void resetAllDefaults() {
         for (HudItem huditem : HUDRegistry.getHudItemList()) {
-            huditem.rotated = false;
+            //huditem.rotated = false;
             huditem.alignment = huditem.getDefaultAlignment();
             huditem.posX = huditem.getDefaultPosX();
             huditem.posY = huditem.getDefaultPosY();
@@ -86,14 +92,10 @@ public class HUDRegistry {
     public static boolean checkForResize() {
         Minecraft mc = getMinecraftInstance();
 
-        ScaledResolution scaledresolution = new ScaledResolution(
-                mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        if (scaledresolution.getScaledWidth() != screenWidth
-                || scaledresolution.getScaledHeight() != screenHeight) {
+        ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+        if (scaledresolution.getScaledWidth() != screenWidth || scaledresolution.getScaledHeight() != screenHeight) {
             if (screenWidth != 0) {
-                fixHudItemOffsets(scaledresolution.getScaledWidth(),
-                        scaledresolution.getScaledHeight(), screenWidth,
-                        screenHeight);
+                fixHudItemOffsets(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), screenWidth, screenHeight);
             }
             screenWidth = scaledresolution.getScaledWidth();
             screenHeight = scaledresolution.getScaledHeight();
@@ -102,8 +104,7 @@ public class HUDRegistry {
         return false;
     }
 
-    private static void fixHudItemOffsets(int newScreenWidth,
-            int newScreenHeight, int oldScreenWidth, int oldScreenHeight) {
+    private static void fixHudItemOffsets(int newScreenWidth, int newScreenHeight, int oldScreenWidth, int oldScreenHeight) {
         for (HudItem hudItem : hudItemList) {
             if (Alignment.isHorizontalCenter(hudItem.alignment)) {
                 int offsetX = hudItem.posX - oldScreenWidth / 2;
@@ -145,5 +146,9 @@ public class HUDRegistry {
             nbt.setBoolean(hudItem.getName(), true);
         }
 
+    }
+
+    public static void setInitialLoadComplete(boolean b) {
+        initialLoadComplete = b;
     }
 }
