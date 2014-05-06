@@ -14,7 +14,6 @@ import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
-
 public class HudItemJumpBar extends HudItem {
 
     @Override
@@ -60,7 +59,8 @@ public class HudItemJumpBar extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        mc.mcProfiler.startSection("jumpBar");
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -72,17 +72,16 @@ public class HudItemJumpBar extends HudItem {
 
         RenderAssist.drawTexturedModalRect(x, top, 0, 84, barWidth, 5);
 
-        if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition)
-                && filled == 0) {
+        if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition) && filled == 0) {
             filled = 182;
         }
 
         if (filled > 0) {
             RenderAssist.drawTexturedModalRect(x, top, 0, 89, filled, 5);
         }
-
-        mc.mcProfiler.endSection();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
     }
 
     @Override
@@ -97,14 +96,7 @@ public class HudItemJumpBar extends HudItem {
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
-    }
-
-    @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
 
 }

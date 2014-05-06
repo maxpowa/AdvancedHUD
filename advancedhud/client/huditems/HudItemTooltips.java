@@ -1,15 +1,15 @@
 package advancedhud.client.huditems;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.item.ItemStack;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.item.ItemStack;
 
 public class HudItemTooltips extends HudItem {
 
@@ -64,10 +64,7 @@ public class HudItemTooltips extends HudItem {
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
 
-        mc.mcProfiler.startSection("toolHighlight");
-
-        if (mc.currentScreen instanceof GuiAdvancedHUDConfiguration
-                || mc.currentScreen instanceof GuiScreenReposition) {
+        if (mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition) {
             itemName = "TOOLTIP";
         }
 
@@ -77,29 +74,21 @@ public class HudItemTooltips extends HudItem {
             if (Alignment.isLeft(alignment)) {
                 posX = this.posX;
             } else if (Alignment.isHorizontalCenter(alignment)) {
-                posX = this.posX
-                        + (getWidth() - fontrenderer.getStringWidth(itemName))
-                        / 2;
+                posX = this.posX + (getWidth() - fontrenderer.getStringWidth(itemName)) / 2;
             } else {
-                posX = this.posX + getWidth()
-                        - fontrenderer.getStringWidth(itemName);
+                posX = this.posX + getWidth() - fontrenderer.getStringWidth(itemName);
             }
 
-            fontrenderer.drawStringWithShadow(itemRarityColorCode + itemName,
-                    posX, posY, stringColor);
+            fontrenderer.drawStringWithShadow(itemRarityColorCode + itemName, posX, posY, stringColor);
         }
-
-        mc.mcProfiler.endSection();
-
     }
-    
+
     @Override
     public void tick() {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.thePlayer != null) {
             ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
-            String currentName = currentItem == null ? "" : currentItem
-                    .getDisplayName();
+            String currentName = currentItem == null ? "" : currentItem.getDisplayName();
 
             resetFadeTimer = !currentName.equals(itemName);
             itemName = currentName;
@@ -109,20 +98,20 @@ public class HudItemTooltips extends HudItem {
                 stringColor = 16777215;
             }
         }
-        
+
         if (resetFadeTimer) {
             alpha = 1.0F;
 
             int fadeSpeed = 8 * 20;
 
-            updateCounter = (HUDRegistry.updateCounter + fadeSpeed);
+            updateCounter = HUDRegistry.updateCounter + fadeSpeed;
             resetFadeTimer = false;
-          } else {
-            alpha = ((updateCounter - HUDRegistry.updateCounter) / 20.0F);
+        } else {
+            alpha = (updateCounter - HUDRegistry.updateCounter) / 20.0F;
             alpha = Math.min(Math.max(alpha, 0.0F), 1.0F);
-          }
+        }
     }
-    
+
     @Override
     public boolean needsTick() {
         return true;
@@ -135,14 +124,7 @@ public class HudItemTooltips extends HudItem {
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
-    }
-
-    @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
 
 }

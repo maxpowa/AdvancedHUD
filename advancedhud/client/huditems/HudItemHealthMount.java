@@ -1,12 +1,7 @@
 package advancedhud.client.huditems;
 
-import advancedhud.api.Alignment;
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
-import advancedhud.api.RenderAssist;
-import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
-import advancedhud.client.ui.GuiScreenHudItem;
-import advancedhud.client.ui.GuiScreenReposition;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,6 +9,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityHorse;
+import advancedhud.api.Alignment;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+import advancedhud.api.RenderAssist;
+import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
+import advancedhud.client.ui.GuiScreenHudItem;
+import advancedhud.client.ui.GuiScreenReposition;
 
 public class HudItemHealthMount extends HudItem {
 
@@ -59,12 +61,12 @@ public class HudItemHealthMount extends HudItem {
 
     @Override
     public void render(float paramFloat) {
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
         Minecraft mc = Minecraft.getMinecraft();
-        mc.mcProfiler.startSection("healthmount");
         Entity tmp = mc.thePlayer.ridingEntity;
         int right_height = 1;
-        if (tmp == null
-                && (mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition)) {
+        if (tmp == null && (mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition)) {
             tmp = new EntityHorse(mc.theWorld);
         }
         if (!(tmp instanceof EntityLivingBase))
@@ -78,7 +80,7 @@ public class HudItemHealthMount extends HudItem {
         EntityLivingBase mount = (EntityLivingBase) tmp;
         int health = (int) Math.ceil(mount.getHealth());
         double healthMax = mount.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue();
-        int hearts = (int) Math.ceil((((float) healthMax) + 0.5F) / 2F);
+        int hearts = (int) Math.ceil(((float) healthMax + 0.5F) / 2F);
 
         if (hearts > 30) {
             hearts = 30;
@@ -108,6 +110,8 @@ public class HudItemHealthMount extends HudItem {
                 right_height = i + 1;
             }
         }
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
     }
 
     @Override
@@ -127,14 +131,7 @@ public class HudItemHealthMount extends HudItem {
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
-    }
-
-    @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
 
 }

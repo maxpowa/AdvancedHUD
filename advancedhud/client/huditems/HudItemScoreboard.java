@@ -3,12 +3,6 @@ package advancedhud.client.huditems;
 import java.util.Collection;
 import java.util.Iterator;
 
-import advancedhud.api.Alignment;
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
-import advancedhud.api.RenderAssist;
-import advancedhud.client.ui.GuiScreenHudItem;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.scoreboard.Score;
@@ -16,6 +10,11 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.EnumChatFormatting;
+import advancedhud.api.Alignment;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+import advancedhud.api.RenderAssist;
+import advancedhud.client.ui.GuiScreenHudItem;
 
 public class HudItemScoreboard extends HudItem {
 
@@ -36,7 +35,7 @@ public class HudItemScoreboard extends HudItem {
 
     @Override
     public int getDefaultPosX() {
-        return HUDRegistry.screenWidth-40;
+        return HUDRegistry.screenWidth - 40;
     }
 
     @SuppressWarnings("rawtypes")
@@ -49,10 +48,10 @@ public class HudItemScoreboard extends HudItem {
             Collection collection = scoreboard.func_96534_i(objective);
             if (collection.size() <= 15) {
                 int l = collection.size() * mc.fontRenderer.FONT_HEIGHT;
-                return (HUDRegistry.screenHeight / 2 + l / 3);
+                return HUDRegistry.screenHeight / 2 + l / 3;
             }
         }
-        return (HUDRegistry.screenHeight / 2 + 21 / 3);
+        return HUDRegistry.screenHeight / 2 + 21 / 3;
     }
 
     @Override
@@ -84,14 +83,12 @@ public class HudItemScoreboard extends HudItem {
             Scoreboard scoreboard = objective.getScoreboard();
             Collection collection = scoreboard.func_96534_i(objective);
 
-            if (collection.size() <= 15)
-            {
+            if (collection.size() <= 15) {
                 int k = mc.fontRenderer.getStringWidth(objective.getDisplayName());
                 String s;
 
-                for (Iterator iterator = collection.iterator(); iterator.hasNext(); k = Math.max(k, mc.fontRenderer.getStringWidth(s)))
-                {
-                    Score score = (Score)iterator.next();
+                for (Iterator iterator = collection.iterator(); iterator.hasNext(); k = Math.max(k, mc.fontRenderer.getStringWidth(s))) {
+                    Score score = (Score) iterator.next();
                     ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
                     s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
                 }
@@ -102,9 +99,8 @@ public class HudItemScoreboard extends HudItem {
                 int k1 = 0;
                 Iterator iterator1 = collection.iterator();
 
-                while (iterator1.hasNext())
-                {
-                    Score score1 = (Score)iterator1.next();
+                while (iterator1.hasNext()) {
+                    Score score1 = (Score) iterator1.next();
                     ++k1;
                     ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
                     String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
@@ -116,8 +112,7 @@ public class HudItemScoreboard extends HudItem {
                     mc.fontRenderer.drawString(s1, j1, l1, 553648127);
                     mc.fontRenderer.drawString(s2, i2 - mc.fontRenderer.getStringWidth(s2), l1, 553648127);
 
-                    if (k1 == collection.size())
-                    {
+                    if (k1 == collection.size()) {
                         String s3 = objective.getDisplayName();
                         RenderAssist.drawRect(j1 - 2, l1 - mc.fontRenderer.FONT_HEIGHT - 1, i2, l1 - 1, 1610612736);
                         RenderAssist.drawRect(j1 - 2, l1 - 1, i2, l1, 1342177280);
@@ -126,12 +121,6 @@ public class HudItemScoreboard extends HudItem {
                 }
             }
         }
-    }
-
-    @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
     }
 
 }

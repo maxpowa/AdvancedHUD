@@ -14,7 +14,6 @@ import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
-
 public class HudItemExperienceBar extends HudItem {
 
     @Override
@@ -29,27 +28,31 @@ public class HudItemExperienceBar extends HudItem {
 
     @Override
     public Alignment getDefaultAlignment() {
-        return Alignment.BOTTOMCENTER;
+        return rotated? Alignment.CENTERRIGHT : Alignment.BOTTOMCENTER;
     }
 
     @Override
     public int getDefaultPosX() {
+        if (rotated)
+            return HUDRegistry.screenWidth - 29;
         return HUDRegistry.screenWidth / 2 - 91;
     }
 
     @Override
     public int getDefaultPosY() {
+        if (rotated)
+            return HUDRegistry.screenHeight / 2 - 91;
         return HUDRegistry.screenHeight - 29;
     }
 
     @Override
     public int getWidth() {
-        return 182;
+        return rotated ? 4 : 182;
     }
 
     @Override
     public int getHeight() {
-        return 4;
+        return rotated ? 182 : 4;
     }
 
     @Override
@@ -60,10 +63,10 @@ public class HudItemExperienceBar extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-        mc.mcProfiler.startSection("expBar");
         int cap = mc.thePlayer.xpBarCap();
         int left = posX;
 
@@ -71,23 +74,24 @@ public class HudItemExperienceBar extends HudItem {
             short barWidth = 182;
             int filled = (int) (mc.thePlayer.experience * (barWidth + 1));
             int top = posY;
-            RenderAssist.drawTexturedModalRect(left, top, 0, 64, barWidth, 5);
+            if (rotated) {
+                GL11.glTranslatef(left+5, top, 0.0F);
+                GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
+            } else {
+                GL11.glTranslatef(left, top, 0.0F);
+            }
+            RenderAssist.drawTexturedModalRect(0, 0, 0, 64, barWidth, 5);
 
-            if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition)
-                    && filled == 0) {
+            if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition) && filled == 0) {
                 filled = 182;
             }
 
             if (filled > 0) {
-                RenderAssist.drawTexturedModalRect(left, top, 0, 69, filled, 5);
+                RenderAssist.drawTexturedModalRect(0, 0, 0, 69, filled, 5);
             }
         }
 
-        mc.mcProfiler.endSection();
-
-        if (mc.playerController.isNotCreative()
-                && mc.thePlayer.experienceLevel > 0) {
-            mc.mcProfiler.startSection("expLevel");
+        if (mc.playerController.isNotCreative() && mc.thePlayer.experienceLevel > 0) {
             boolean flag1 = false;
             int color = flag1 ? 16777215 : 8453920;
             String text = "" + mc.thePlayer.experienceLevel;
@@ -98,9 +102,10 @@ public class HudItemExperienceBar extends HudItem {
             mc.fontRenderer.drawString(text, x, y + 1, 0);
             mc.fontRenderer.drawString(text, x, y - 1, 0);
             mc.fontRenderer.drawString(text, x, y, color);
-            mc.mcProfiler.endSection();
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
     }
 
     @Override
@@ -110,14 +115,6 @@ public class HudItemExperienceBar extends HudItem {
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
-
-    @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

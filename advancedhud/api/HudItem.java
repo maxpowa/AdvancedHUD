@@ -24,7 +24,7 @@ public abstract class HudItem {
         posY = getDefaultPosY();
         id = getDefaultID();
     }
-    
+
     /**
      * Unique name for the HudItem, only used for NBT saving/loading
      * 
@@ -68,9 +68,14 @@ public abstract class HudItem {
     public abstract GuiScreen getConfigScreen();
 
     public abstract void render(float paramFloat);
-    
+
+    /**
+     * 
+     * If you don't want any rotation, you can <br>simply make this method return.
+     *
+     */
     public void rotate() {
-        this.rotated = !this.rotated;
+        rotated = !rotated;
     }
 
     /**
@@ -78,9 +83,9 @@ public abstract class HudItem {
      * {@link HudItem}.needsTick() to true.
      */
     public void tick() {
-        
+
     }
-    
+
     /**
      * Set this to true if you require the {@link HudItem}.tick() method to run<br>
      */
@@ -104,10 +109,8 @@ public abstract class HudItem {
      * Ensures that the HudItem will never be off the screen
      */
     public void fixBounds() {
-        posX = Math
-                .max(0, Math.min(HUDRegistry.screenWidth - getWidth(), posX));
-        posY = Math.max(0,
-                Math.min(HUDRegistry.screenHeight - getHeight(), posY));
+        posX = Math.max(0, Math.min(HUDRegistry.screenWidth - getWidth(), posX));
+        posY = Math.max(0, Math.min(HUDRegistry.screenHeight - getHeight(), posY));
     }
 
     public void loadFromNBT(NBTTagCompound nbt) {
@@ -151,6 +154,10 @@ public abstract class HudItem {
     }
 
     public boolean shouldDrawAsPlayer() {
+        return true;
+    }
+
+    public boolean canRotate() {
         return true;
     }
 }

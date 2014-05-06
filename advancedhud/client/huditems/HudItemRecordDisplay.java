@@ -12,7 +12,6 @@ import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.client.ui.GuiScreenHudItem;
 
-
 public class HudItemRecordDisplay extends HudItem {
 
     private int recordPlayingUpFor;
@@ -61,15 +60,13 @@ public class HudItemRecordDisplay extends HudItem {
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
 
     @Override
     public void render(float partialTicks) {
         Minecraft mc = Minecraft.getMinecraft();
         if (recordPlayingUpFor > 0) {
-            mc.mcProfiler.startSection("recordDisplay");
             float hue = recordPlayingUpFor - partialTicks;
             int opacity = (int) (hue * 256.0F / 20.0F);
             if (opacity > 255) {
@@ -81,16 +78,11 @@ public class HudItemRecordDisplay extends HudItem {
                 GL11.glTranslatef(posX, posY, 0.0F);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                int color = recordIsPlaying ? Color.HSBtoRGB(hue / 50.0F, 0.7F,
-                        0.6F) & 0xFFFFFF : 0xFFFFFF;
-                mc.fontRenderer.drawString(recordPlaying,
-                        -mc.fontRenderer.getStringWidth(recordPlaying) / 2, -4,
-                        color | opacity << 24);
+                int color = recordIsPlaying ? Color.HSBtoRGB(hue / 50.0F, 0.7F, 0.6F) & 0xFFFFFF : 0xFFFFFF;
+                mc.fontRenderer.drawString(recordPlaying, -mc.fontRenderer.getStringWidth(recordPlaying) / 2, -4, color | opacity << 24);
                 GL11.glDisable(GL11.GL_BLEND);
                 GL11.glPopMatrix();
             }
-
-            mc.mcProfiler.endSection();
         }
     }
 
@@ -104,12 +96,6 @@ public class HudItemRecordDisplay extends HudItem {
         if (recordPlayingUpFor > 0) {
             --recordPlayingUpFor;
         }
-    }
-
-    @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
     }
 
 }

@@ -16,7 +16,6 @@ import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
 
-
 public class HudItemBossBar extends HudItem {
 
     @Override
@@ -62,12 +61,10 @@ public class HudItemBossBar extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        mc.mcProfiler.startSection("bossHealth");
         GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture("textures/gui/icons.png");
-        if (BossStatus.bossName != null && BossStatus.statusBarTime > 0
-                || mc.currentScreen instanceof GuiAdvancedHUDConfiguration
-                || mc.currentScreen instanceof GuiScreenReposition) {
+        if (BossStatus.bossName != null && BossStatus.statusBarTime > 0 || mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition) {
             if (BossStatus.bossName != null) {
                 --BossStatus.statusBarTime;
             }
@@ -87,28 +84,18 @@ public class HudItemBossBar extends HudItem {
                 RenderAssist.drawTexturedModalRect(j, b0, 0, 79, k, 5);
             }
 
-            String s = BossStatus.bossName != null ? BossStatus.bossName
-                    : "AdvancedHUD Config";
-            fontrenderer.drawStringWithShadow(s,
-                    posX + 91 - fontrenderer.getStringWidth(s) / 2, b0 - 10,
-                    16777215);
+            String s = BossStatus.bossName != null ? BossStatus.bossName : "AdvancedHUD Config";
+            fontrenderer.drawStringWithShadow(s, posX + 91 - fontrenderer.getStringWidth(s) / 2, b0 - 10, 16777215);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             RenderAssist.bindTexture(Gui.icons);
         }
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
-        Minecraft.getMinecraft().mcProfiler.endSection();
     }
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
-    }
-
-    @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
 
 }

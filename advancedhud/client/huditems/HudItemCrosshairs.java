@@ -12,7 +12,6 @@ import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiScreenHudItem;
 
-
 public class HudItemCrosshairs extends HudItem {
 
     @Override
@@ -57,15 +56,11 @@ public class HudItemCrosshairs extends HudItem {
 
     @Override
     public void render(float paramFloat) {
-        Minecraft mc = Minecraft.getMinecraft();
-        mc.mcProfiler.startSection("crosshair");
         RenderAssist.bindTexture(Gui.icons);
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR,
-                GL11.GL_ONE_MINUS_SRC_COLOR);
+        GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
         RenderAssist.drawTexturedModalRect(posX, posY, 0, 0, 16, 16);
         GL11.glDisable(GL11.GL_BLEND);
-        mc.mcProfiler.endSection();
     }
 
     @Override
@@ -80,14 +75,11 @@ public class HudItemCrosshairs extends HudItem {
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
-
+    
     @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
+    public boolean canRotate() {
+        return false;
     }
 }
-

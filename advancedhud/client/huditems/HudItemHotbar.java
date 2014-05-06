@@ -16,13 +16,12 @@ import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiScreenHudItem;
 
-
 public class HudItemHotbar extends HudItem {
-    
+
     public HudItemHotbar() {
         super();
     }
-    
+
     @Override
     public String getName() {
         return "hotbar";
@@ -44,13 +43,13 @@ public class HudItemHotbar extends HudItem {
     public int getDefaultPosX() {
         if (rotated)
             return HUDRegistry.screenWidth - getWidth();
-        return (HUDRegistry.screenWidth-getWidth())/2;
+        return (HUDRegistry.screenWidth - getWidth()) / 2;
     }
 
     @Override
     public int getDefaultPosY() {
         if (rotated)
-            return (HUDRegistry.screenHeight-getHeight())/2;
+            return (HUDRegistry.screenHeight - getHeight()) / 2;
         return HUDRegistry.screenHeight - getHeight();
     }
 
@@ -71,42 +70,51 @@ public class HudItemHotbar extends HudItem {
     @Override
     public void render(float partialTicks) {
         Minecraft mc = HUDRegistry.getMinecraftInstance();
-        mc.mcProfiler.startSection("actionBar");
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderAssist.bindTexture(new ResourceLocation(
-                "textures/gui/widgets.png"));
         InventoryPlayer inv = mc.thePlayer.inventory;
-        if (rotated)
-            GL11.glRotatef(-90, posX, posY, 0);
-        RenderAssist.drawTexturedModalRect(posX, posY, 0, 0, 182, 22);
-        RenderAssist.drawTexturedModalRect(posX - 1 + inv.currentItem * 20,
-                posY - 1, 0, 22, 24, 22);
+        if (!rotated) {
+            RenderAssist.bindTexture(new ResourceLocation("textures/gui/widgets.png"));
+            RenderAssist.drawTexturedModalRect(posX, posY, 0, 0, 182, 22);
+            RenderAssist.bindTexture(new ResourceLocation("advancedhud", "textures/gui/rotateWidgets.png"));
+            RenderAssist.drawTexturedModalRect(posX - 1 + inv.currentItem * 20, posY - 1, 0, 0, 24, 24);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-        RenderHelper.enableGUIStandardItemLighting();
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glPopMatrix();
+            RenderHelper.enableGUIStandardItemLighting();
 
-        for (int i = 0; i < 9; ++i) {
-            int x = 0;
-            int z = 0;
-            if (rotated) {
-                z = posY - 90 + i * 20 + 2;
-                x = posX - 6 - 3;
-            } else {
-                x = posX - 90 + i * 20 + 2;
-                z = posY - 6 - 3;
+            for (int i = 0; i < 9; ++i) {
+                int x = posX - 90 + i * 20 + 2;
+                int z = posY - 6 - 3;
+                RenderAssist.renderInventorySlot(i, x, z, partialTicks, mc);
             }
-            RenderAssist.renderInventorySlot(i, x, z, partialTicks, mc);
-        }
 
-        RenderHelper.disableStandardItemLighting();
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        mc.mcProfiler.endSection();
+            RenderHelper.disableStandardItemLighting();
+        } else {
+            GL11.glTranslatef((float) posX + getWidth(), posY, 0.0F);
+            GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
+            RenderAssist.bindTexture(new ResourceLocation("textures/gui/widgets.png"));
+            RenderAssist.drawTexturedModalRect(0, 0, 0, 0, 182, 22);
+            RenderAssist.bindTexture(new ResourceLocation("advancedhud", "textures/gui/rotateWidgets.png"));
+            RenderAssist.drawTexturedModalRect(inv.currentItem * 20 - 1, -1, 0, 0, 24, 24);
+
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glPopMatrix();
+            RenderHelper.enableGUIStandardItemLighting();
+
+            for (int i = 0; i < 9; ++i) {
+                int x = posX - 88;
+                int z = posY - 11 + i * 20 + 2;
+                RenderAssist.renderInventorySlot(i, x, z, partialTicks, mc);
+            }
+
+            RenderHelper.disableStandardItemLighting();
+        }
     }
 
     @Override
@@ -126,24 +134,24 @@ public class HudItemHotbar extends HudItem {
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
-    
+
     @Override
     public void loadFromNBT(NBTTagCompound nbt) {
         super.loadFromNBT(nbt);
     }
-    
+
     @Override
     public void saveToNBT(NBTTagCompound nbt) {
         super.saveToNBT(nbt);
     }
-    
+
+    @Override
     public void rotate() {
         super.rotate();
-        this.posX = getDefaultPosX();
-        this.posY = getDefaultPosY();
+        // posX = getDefaultPosX();
+        // posY = getDefaultPosY();
     }
 
 }

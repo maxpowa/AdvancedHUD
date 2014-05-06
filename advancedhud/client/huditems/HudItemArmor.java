@@ -1,5 +1,11 @@
 package advancedhud.client.huditems;
 
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.common.ForgeHooks;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
@@ -7,10 +13,6 @@ import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.common.ForgeHooks;
 
 public class HudItemArmor extends HudItem {
 
@@ -31,21 +33,29 @@ public class HudItemArmor extends HudItem {
 
     @Override
     public int getDefaultPosX() {
+        if (rotated)
+            return HUDRegistry.screenWidth - 49;
         return HUDRegistry.screenWidth / 2 - 91;
     }
 
     @Override
     public int getDefaultPosY() {
+        if (rotated)
+            return HUDRegistry.screenHeight / 2 - 91;
         return HUDRegistry.screenHeight - 49;
     }
 
     @Override
     public int getWidth() {
+        if (rotated)
+            return 9;
         return 81;
     }
 
     @Override
     public int getHeight() {
+        if (rotated)
+            return 81;
         return 9;
     }
 
@@ -57,15 +67,15 @@ public class HudItemArmor extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        mc.mcProfiler.startSection("armor");
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
 
         int left = posX;
         int top = posY;
 
         int level = ForgeHooks.getTotalArmorValue(mc.thePlayer);
-        if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition)
-                && level == 0) {
+        if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition) && level == 0) {
             level = 10;
         }
         for (int i = 1; level > 0 && i < 20; i += 2) {
@@ -76,10 +86,14 @@ public class HudItemArmor extends HudItem {
             } else if (i > level) {
                 RenderAssist.drawTexturedModalRect(left, top, 16, 9, 9, 9);
             }
-            left += 8;
+            if (!rotated) {
+                left += 8;
+            } else {
+                top += 8;
+            }
         }
-
-        mc.mcProfiler.endSection();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
     }
 
     @Override
@@ -89,14 +103,7 @@ public class HudItemArmor extends HudItem {
 
     @Override
     public GuiScreen getConfigScreen() {
-        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen,
-                this);
-    }
-
-    @Override
-    public void rotate() {
-        // TODO Auto-generated method stub
-        
+        return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
 
 }
