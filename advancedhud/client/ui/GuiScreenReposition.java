@@ -10,13 +10,13 @@ import advancedhud.api.Alignment;
 import advancedhud.api.HudItem;
 import advancedhud.client.GuiAdvancedHUD;
 
-
 public class GuiScreenReposition extends GuiScreen {
     protected GuiScreen parentScreen;
     protected HudItem hudItem;
     protected boolean axisAlign;
     protected int oldPosX;
     protected int oldPosY;
+    private static boolean help = true;
 
     public GuiScreenReposition(GuiScreen parentScreen, HudItem hudItem) {
         this.parentScreen = parentScreen;
@@ -50,13 +50,11 @@ public class GuiScreenReposition extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float f) {
         this.drawDefaultBackground();
-        drawCenteredString(
-                mc.fontRenderer,
-                "CLICK to confirm, ESCAPE to cancel, R to reset, CTRL to align",
-                width / 2, 16, 16777215);
-        drawCenteredString(mc.fontRenderer,
-                "Alignment: " + Alignment.calculateAlignment(mouseX, mouseY),
-                width / 2, 26, 16777215);
+
+        if (help) {
+            drawCenteredString(mc.fontRenderer, "CLICK to confirm, ESCAPE to cancel, R to reset, CTRL to align", width / 2, 16, 16777215);
+            drawCenteredString(mc.fontRenderer, "Alignment: " + Alignment.calculateAlignment(mouseX, mouseY), width / 2, 26, 16777215);
+        }
 
         hudItem.render(GuiAdvancedHUD.partialTicks);
 
@@ -73,8 +71,8 @@ public class GuiScreenReposition extends GuiScreen {
         if (mouseState == 0) {
             hudItem.alignment = Alignment.calculateAlignment(mouseX, mouseY);
             mc.displayGuiScreen(parentScreen);
+            SaveController.saveConfig("config");
         }
-        SaveController.saveConfig("config");
     }
 
     @Override
@@ -92,15 +90,15 @@ public class GuiScreenReposition extends GuiScreen {
             hudItem.posX = oldPosX;
             hudItem.posY = oldPosY;
             mc.displayGuiScreen(parentScreen);
-        }
-        if (keyCode == 19) {
-            hudItem.rotated = false;
+            SaveController.saveConfig("config");
+        } else if (keyCode == 19) {
+            //hudItem.rotated = false;
             hudItem.posX = hudItem.getDefaultPosX();
             hudItem.posY = hudItem.getDefaultPosY();
             hudItem.alignment = hudItem.getDefaultAlignment();
             hudItem.fixBounds();
             mc.displayGuiScreen(parentScreen);
+            SaveController.saveConfig("config");
         }
-        SaveController.saveConfig("config");
     }
 }
