@@ -53,7 +53,7 @@ public class GuiAdvancedHUD extends GuiIngameForge {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glBlendFunc(770, 771);
 
-        res = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+        res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 
         mc.mcProfiler.startSection("modules");
         for (HudItem huditem : HUDRegistry.getHudItemList()) {

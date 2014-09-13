@@ -78,3 +78,4 @@ local.properties
 # PDT-specific
 .buildpath
 /run/
+/logs/
