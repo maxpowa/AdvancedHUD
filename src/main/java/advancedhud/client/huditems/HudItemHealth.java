@@ -1,15 +1,27 @@
 package advancedhud.client.huditems;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.lwjgl.opengl.GL11;
 
 import advancedhud.api.Alignment;
@@ -22,6 +34,7 @@ public class HudItemHealth extends HudItem {
 
     Minecraft mc = null;
     Random rand = new Random();
+	private boolean svgRenderer;
 
     @Override
     public String getName() {
@@ -72,6 +85,11 @@ public class HudItemHealth extends HudItem {
         if (mc == null)
             mc = Minecraft.getMinecraft();
 
+        if (svgRenderer) {
+        	doSvgRender(partialTicks);
+        	return;
+        }
+        
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
@@ -188,7 +206,27 @@ public class HudItemHealth extends HudItem {
         GL11.glPopMatrix();
     }
 
-    @Override
+	BufferedImage bi = null;
+    private void doSvgRender(float partialTicks) {
+    	if (bi == null) {
+			try {
+				bi = RenderAssist.loadSVGFile(new ResourceLocation("svg/sao"), new ResourceLocation("advancedhud:textures/svg/sao-health.svg"));
+			} catch (TranscoderException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
+    	GL11.glPushMatrix();
+    	RenderAssist.bindTexture(new ResourceLocation("svg/sao"));
+    	//Draws a textured rectangle at z = 0. Args: x, y, u, v, width, height, textureWidth, textureHeight
+    	GL11.glScalef(0.1f, 0.1f, 1.0f);
+    	Gui.func_146110_a(20, 20, 0, 0, bi.getWidth(), bi.getHeight(), bi.getWidth(), bi.getHeight());
+    	GL11.glPopMatrix();
+	}
+
+	@Override
     public int getDefaultID() {
         return 2;
     }
@@ -207,4 +245,8 @@ public class HudItemHealth extends HudItem {
     public GuiScreen getConfigScreen() {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
+
+	public void useSVGRenderer() {
+		this.svgRenderer = !this.svgRenderer;
+	}
 }

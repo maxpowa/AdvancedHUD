@@ -6,6 +6,7 @@ import advancedhud.AdvancedHUD;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.client.huditems.HudItemCrosshairs;
+import advancedhud.client.huditems.HudItemHealth;
 
 public class GuiScreenHudItem extends GuiScreen {
 
@@ -27,6 +28,8 @@ public class GuiScreenHudItem extends GuiScreen {
         } 
         if (hudItem instanceof HudItemCrosshairs) {
             buttonList.add(new GuiButtonIconGrid(3320, HUDRegistry.screenWidth / 2 - 64, 40, "Crosshair Selector"));
+        } else if (hudItem instanceof HudItemHealth) {
+        	buttonList.add(new GuiButton(3323, HUDRegistry.screenWidth / 2 - 64, 50, "SVG Mode"));
         }
     }
 
@@ -55,6 +58,8 @@ public class GuiScreenHudItem extends GuiScreen {
             mc.displayGuiScreen(parentScreen);
         } else if (par1GuiButton.id == 100) {
             hudItem.rotate();
+        } else if (par1GuiButton.id == 3323) {
+        	((HudItemHealth)hudItem).useSVGRenderer();
         }
         AdvancedHUD.log.info("Clicked button " + par1GuiButton.id);
         super.actionPerformed(par1GuiButton);

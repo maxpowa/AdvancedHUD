@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="1620px" height="258px" viewBox="0 0 1620 258" enable-background="new 0 0 1620 258" xml:space="preserve">
+<g id="background_1_">
+	<path id="background" fill="#787878" d="M1540.614,137.5L1620,0H100.5v194h867v-35c0-11.874,9.626-21.5,21.5-21.5H1540.614z
+		 M951.314,104.5l-20.784,36H332.95v-87h1182.024l-29.444,51H951.314L951.314,104.5z M1567.5,159v84c0,8.284-6.716,15-15,15h-182.75
+		V144h182.75C1560.784,144,1567.5,150.716,1567.5,159z M989,144h374.25v114H989c-8.284,0-15-6.716-15-15v-84
+		C974,150.716,980.716,144,989,144z"/>
+	<path id="anchor" fill="#787878" enable-background="new    " d="M0,0h91v194H0v-47.5h32c9.665,0,17.5-7.835,17.5-17.5V65
+		c0-9.665-7.835-17.5-17.5-17.5H0V0z"/>
+</g>
+<polygon id="gauge_bg" opacity="0.09" fill="#FFFFFF" enable-background="new    " points="951.314,104.5 930.53,140.5 
+	332.95,140.5 332.95,53.5 1514.975,53.5 1485.53,104.5 "/>
+<g id="gauge_wrapper">
+	<path fill="#373737" d="M330.75,50.5v92h601.523l20.784-36h534.216l32.332-56H330.75z M1481.2,97H946.984L926.2,133H340.45V61
+		h1161.534L1481.2,97z"/>
+	
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="361.0605" y1="445" x2="361.0605" y2="352" gradientTransform="matrix(1 0 0 -1 564 494)">
+		<stop  offset="0" style="stop-color:#373232"/>
+		<stop  offset="1" style="stop-color:#161616"/>
+	</linearGradient>
+	<path fill="url(#SVGID_1_)" d="M1520.171,49H329.95v93h602.312l20.785-36h534.215L1520.171,49L1520.171,49z M951.314,103
+		l-20.784,36H332.95V52h1182.024l-29.444,51H951.314L951.314,103z"/>
+	<path fill="#FBFBFB" d="M1520.171,50.5H329.95v93h602.312l20.785-36h534.215L1520.171,50.5L1520.171,50.5z M951.314,104.5
+		l-20.784,36H332.95v-87h1182.024l-29.444,51H951.314L951.314,104.5z"/>
+</g>
+<linearGradient id="gauge_red_1_" gradientUnits="userSpaceOnUse" x1="357.2173" y1="433" x2="357.2173" y2="361" gradientTransform="matrix(1 0 0 -1 564 494)">
+	<stop  offset="0" style="stop-color:#890034"/>
+	<stop  offset="1" style="stop-color:#AE0750"/>
+</linearGradient>
+<polygon id="gauge_red" fill="url(#gauge_red_1_)" points="946.985,97 1481.2,97 1501.984,61 340.45,61 340.45,133 926.2,133 "/>
+<linearGradient id="gauge_yellow_1_" gradientUnits="userSpaceOnUse" x1="357.2173" y1="433" x2="357.2173" y2="361" gradientTransform="matrix(1 0 0 -1 564 494)">
+	<stop  offset="0" style="stop-color:#939409"/>
+	<stop  offset="1" style="stop-color:#B4B733"/>
+</linearGradient>
+<polygon id="gauge_yellow" fill="url(#gauge_yellow_1_)" points="946.985,97 1481.2,97 1501.984,61 340.45,61 340.45,133 926.2,133 
+	"/>
+<linearGradient id="gauge_green_1_" gradientUnits="userSpaceOnUse" x1="357.2173" y1="433" x2="357.2173" y2="361" gradientTransform="matrix(1 0 0 -1 564 494)">
+	<stop  offset="0" style="stop-color:#65A719"/>
+	<stop  offset="1" style="stop-color:#87D529"/>
+</linearGradient>
+<polygon id="gauge_green" fill="url(#gauge_green_1_)" points="946.985,97 1481.2,97 1501.984,61 340.45,61 340.45,133 926.2,133 
+	"/>
+</svg>
