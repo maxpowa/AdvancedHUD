@@ -40,4 +40,17 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+    
+    from {configurations.packageLibs.collect {zipTree(it)}} {
+         exclude "icons/**"
+         exclude "help/**"
+    }
 }
+
+configurations { packageLibs }
+
+dependencies {
+    packageLibs 'org.apache.xmlgraphics:batik-transcoder:1.7'
+    compile 'org.apache.xmlgraphics:batik-transcoder:1.7'
+}
+
