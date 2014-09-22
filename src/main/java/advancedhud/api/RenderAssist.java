@@ -279,27 +279,27 @@ public class RenderAssist {
      * @throws IOException - Throws if the SVG resource cannot be accessed
      */
     public static BufferedImage loadSVGFile(ResourceLocation to, ResourceLocation from) throws TranscoderException, IOException {
-    	// Create the image transcoder
-		BufferedImageTranscoder trans = new BufferedImageTranscoder();
-		
-		// Get the svg file resource, so it can be read as a stream
-		IResource iresource = Minecraft.getMinecraft().getResourceManager().getResource(from);
-		
-		// Read the svg file resource
-        TranscoderInput transIn = new TranscoderInput(iresource.getInputStream());
-        
-        // Transcode the svg file
-		trans.transcode(transIn, null);
-		
-		// Load the svg into a buffered image object
-		BufferedImage bi = trans.getBufferedImage();
+        // Create the image transcoder
+        BufferedImageTranscoder trans = new BufferedImageTranscoder();
 
-		// Standard buffered image loading process for MC
-    	DynamicTexture dynTexture = new DynamicTexture(bi.getWidth(), bi.getHeight());
-		Minecraft.getMinecraft().getTextureManager().loadTexture(to, dynTexture);
-		bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), dynTexture.getTextureData(), 0, bi.getWidth());
-		dynTexture.updateDynamicTexture();
-		return bi;
+        // Get the svg file resource, so it can be read as a stream
+        IResource iresource = Minecraft.getMinecraft().getResourceManager().getResource(from);
+
+        // Read the svg file resource
+        TranscoderInput transIn = new TranscoderInput(iresource.getInputStream());
+
+        // Transcode the svg file
+        trans.transcode(transIn, null);
+
+        // Load the svg into a buffered image object
+        BufferedImage bi = trans.getBufferedImage();
+
+        // Standard buffered image loading process for MC
+        DynamicTexture dynTexture = new DynamicTexture(bi.getWidth(), bi.getHeight());
+        Minecraft.getMinecraft().getTextureManager().loadTexture(to, dynTexture);
+        bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), dynTexture.getTextureData(), 0, bi.getWidth());
+        dynTexture.updateDynamicTexture();
+        return bi;
     }
     
     /**
@@ -307,22 +307,22 @@ public class RenderAssist {
      */
     public static class BufferedImageTranscoder extends ImageTranscoder {
 
-    	private BufferedImage img = null;
+        private BufferedImage img = null;
 
-    	@Override
-    	public BufferedImage createImage(int width, int height) {
-    		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    		return bi;
-    	}
+        @Override
+        public BufferedImage createImage(int width, int height) {
+            BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            return bi;
+        }
 
-    	@Override
-    	public void writeImage(BufferedImage img, TranscoderOutput to) throws TranscoderException {
-    		this.img = img;
-    	}
+        @Override
+        public void writeImage(BufferedImage img, TranscoderOutput to) throws TranscoderException {
+            this.img = img;
+        }
 
-    	public BufferedImage getBufferedImage() {
-    		return img;
-    	}
+        public BufferedImage getBufferedImage() {
+            return img;
+        }
     }
 
 }
