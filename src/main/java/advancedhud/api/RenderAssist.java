@@ -1,11 +1,20 @@
 package advancedhud.api;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -258,6 +267,62 @@ public class RenderAssist {
 
             itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemstack, x, y);
         }
+    }
+    
+    /**
+     * Load an SVG from a ResourceLocation into another ResourceLocation where it may can be bound from
+     * 
+     * @param to - ResourceLocation to put the bind-able image
+     * @param from - Source SVG ResourceLocation
+     * @return BufferedImage, can be used for dimensions or something
+     * @throws TranscoderException - Throws if you attempt to transcode an invalid SVG file
+     * @throws IOException - Throws if the SVG resource cannot be accessed
+     */
+    public static BufferedImage loadSVGFile(ResourceLocation to, ResourceLocation from) throws TranscoderException, IOException {
+    	// Create the image transcoder
+		BufferedImageTranscoder trans = new BufferedImageTranscoder();
+		
+		// Get the svg file resource, so it can be read as a stream
+		IResource iresource = Minecraft.getMinecraft().getResourceManager().getResource(from);
+		
+		// Read the svg file resource
+        TranscoderInput transIn = new TranscoderInput(iresource.getInputStream());
+        
+        // Transcode the svg file
+		trans.transcode(transIn, null);
+		
+		// Load the svg into a buffered image object
+		BufferedImage bi = trans.getBufferedImage();
+
+		// Standard buffered image loading process for MC
+    	DynamicTexture dynTexture = new DynamicTexture(bi.getWidth(), bi.getHeight());
+		Minecraft.getMinecraft().getTextureManager().loadTexture(to, dynTexture);
+		bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), dynTexture.getTextureData(), 0, bi.getWidth());
+		dynTexture.updateDynamicTexture();
+		return bi;
+    }
+    
+    /**
+     * Helper class for loading SVG files.
+     */
+    public static class BufferedImageTranscoder extends ImageTranscoder {
+
+    	private BufferedImage img = null;
+
+    	@Override
+    	public BufferedImage createImage(int width, int height) {
+    		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    		return bi;
+    	}
+
+    	@Override
+    	public void writeImage(BufferedImage img, TranscoderOutput to) throws TranscoderException {
+    		this.img = img;
+    	}
+
+    	public BufferedImage getBufferedImage() {
+    		return img;
+    	}
     }
 
 }
