@@ -22,7 +22,8 @@ hs_err_pid*
 .LSOverride
 
 # Icon must ends with two \r.
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -78,3 +79,14 @@ local.properties
 .buildpath
 /run/
 /logs/
+eclipse/
+
+###################
+# IntelliJ IDEA
+###################
+.idea/
+*.iml
+*.iws
+
+# Minecraft Forge files
+*.txt
