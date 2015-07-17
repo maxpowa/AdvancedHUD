@@ -1,12 +1,10 @@
 package advancedhud;
 
-import net.minecraft.client.Minecraft;
 import advancedhud.api.HUDRegistry;
 import advancedhud.client.GuiAdvancedHUD;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Type;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class TickHandler {
 
@@ -14,8 +12,8 @@ public class TickHandler {
     private boolean firstload = true;
 
     @SubscribeEvent
-    public void RenderTickEvent(RenderTickEvent event) {
-        if ((event.type == Type.RENDER || event.type == Type.CLIENT) && event.phase == Phase.END) {
+    public void RenderTickEvent(TickEvent.RenderTickEvent event) {
+        if ((event.type == TickEvent.Type.RENDER || event.type == TickEvent.Type.CLIENT) && event.phase == TickEvent.Phase.END) {
             Minecraft mc = Minecraft.getMinecraft();
             if (!ticked && mc.ingameGUI != null) {
                 mc.ingameGUI = new GuiAdvancedHUD(mc);

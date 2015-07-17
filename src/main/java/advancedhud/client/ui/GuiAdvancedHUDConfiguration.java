@@ -12,6 +12,8 @@ import advancedhud.SaveController;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 
+import java.io.IOException;
+
 public class GuiAdvancedHUDConfiguration extends GuiScreen {
 
     private static boolean asMount = false;
@@ -45,9 +47,9 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
         }
 
         if (help) {
-            drawCenteredString(mc.fontRenderer, "LEFT CLICK to reposition, RIGHT CLICK to change settings", width / 2, 17, 0xFFFFFF);
-            drawCenteredString(mc.fontRenderer, "ESCAPE to cancel, R to reset all", width / 2, 27, 0xFFFFFF);
-            drawCenteredString(mc.fontRenderer, "M to change to" + (asMount ? " player " : " mount ") + "HUD", width / 2, 37, 0xFFFFFF);
+            drawCenteredString(mc.fontRendererObj, "LEFT CLICK to reposition, RIGHT CLICK to change settings", width / 2, 17, 0xFFFFFF);
+            drawCenteredString(mc.fontRendererObj, "ESCAPE to cancel, R to reset all", width / 2, 27, 0xFFFFFF);
+            drawCenteredString(mc.fontRendererObj, "M to change to" + (asMount ? " player " : " mount ") + "HUD", width / 2, 37, 0xFFFFFF);
         }
 
         super.drawScreen(par1, par2, par3);
@@ -58,7 +60,8 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
      * KeyListener.keyTyped(KeyEvent e).
      */
     @Override
-    protected void keyTyped(char par1, int par2) {
+    protected void keyTyped(char par1, int par2)
+      throws IOException {
         if (par2 == 19) {
             HUDRegistry.resetAllDefaults();
             initGui();
@@ -73,7 +76,8 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton) {
+    protected void actionPerformed(GuiButton par1GuiButton)
+      throws IOException {
         if (par1GuiButton.id == -1) {
             mc.displayGuiScreen(null);
             SaveController.saveConfig("config");
@@ -88,13 +92,15 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
     }
 
     @Override
-    public void mouseClicked(int i, int j, int mouseButton) {
+    public void mouseClicked(int i, int j, int mouseButton)
+      throws IOException {
         if (mouseButton == 1) {
-            for (int l = 0; l < buttonList.size(); ++l) {
-                GuiButton guibutton = (GuiButton) buttonList.get(l);
+            for (Object aButtonList : buttonList) {
+                GuiButton guibutton = (GuiButton) aButtonList;
 
                 if (guibutton.mousePressed(mc, i, j)) {
-                    mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                    mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button" +
+                      ".press"), 1.0F));
                     HudItem hudItem = HUDRegistry.getHudItemByID(guibutton.id);
                     if (hudItem != null) {
                         Minecraft.getMinecraft().displayGuiScreen(hudItem.getConfigScreen());

@@ -68,7 +68,7 @@ public class HudItemBossBar extends HudItem {
             if (BossStatus.bossName != null) {
                 --BossStatus.statusBarTime;
             }
-            FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
+            FontRenderer fontrenderer = Minecraft.getMinecraft().fontRendererObj;
 
             short short1 = 182;
             int j = posX;
@@ -85,7 +85,7 @@ public class HudItemBossBar extends HudItem {
             }
 
             String s = BossStatus.bossName != null ? BossStatus.bossName : "AdvancedHUD Config";
-            fontrenderer.drawStringWithShadow(s, posX + 91 - fontrenderer.getStringWidth(s) / 2, b0 - 10, 16777215);
+            fontrenderer.drawString(s, posX + 91 - fontrenderer.getStringWidth(s) / 2, b0 - 10, 16777215);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             RenderAssist.bindTexture(Gui.icons);
         }

@@ -26,7 +26,7 @@ public class GuiHudItemButton extends GuiButton {
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (visible) {
             GL11.glPushMatrix();
-            FontRenderer fontrenderer = mc.fontRenderer;
+            FontRenderer fontrenderer = mc.fontRendererObj;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             boolean hoverState = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
             for (HudItem huditem : HUDRegistry.getHudItemList()) {

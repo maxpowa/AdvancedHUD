@@ -17,13 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0"
+version = "1.0.0"
 group= "com.maxpowa" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "advancedhud"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
-    assetDir = "eclipse/assets"
+    version = "1.8-11.14.3.1450"
 }
 
 processResources
