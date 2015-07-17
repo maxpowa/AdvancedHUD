@@ -95,13 +95,13 @@ public class HudItemExperienceBar extends HudItem {
             boolean flag1 = false;
             int color = flag1 ? 16777215 : 8453920;
             String text = "" + mc.thePlayer.experienceLevel;
-            int x = posX + 91 - mc.fontRenderer.getStringWidth(text) / 2;
+            int x = posX + 91 - mc.fontRendererObj.getStringWidth(text) / 2;
             int y = posY - 6;
-            mc.fontRenderer.drawString(text, x + 1, y, 0);
-            mc.fontRenderer.drawString(text, x - 1, y, 0);
-            mc.fontRenderer.drawString(text, x, y + 1, 0);
-            mc.fontRenderer.drawString(text, x, y - 1, 0);
-            mc.fontRenderer.drawString(text, x, y, color);
+            mc.fontRendererObj.drawString(text, x + 1, y, 0);
+            mc.fontRendererObj.drawString(text, x - 1, y, 0);
+            mc.fontRendererObj.drawString(text, x, y + 1, 0);
+            mc.fontRendererObj.drawString(text, x, y - 1, 0);
+            mc.fontRendererObj.drawString(text, x, y, color);
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);

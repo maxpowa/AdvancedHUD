@@ -69,7 +69,7 @@ public class HudItemTooltips extends HudItem {
         }
 
         if (itemName != null && !itemName.isEmpty()) {
-            FontRenderer fontrenderer = mc.fontRenderer;
+            FontRenderer fontrenderer = mc.fontRendererObj;
             int posX = 0;
             if (Alignment.isLeft(alignment)) {
                 posX = this.posX;
@@ -79,7 +79,7 @@ public class HudItemTooltips extends HudItem {
                 posX = this.posX + getWidth() - fontrenderer.getStringWidth(itemName);
             }
 
-            fontrenderer.drawStringWithShadow(itemRarityColorCode + itemName, posX, posY, stringColor);
+            fontrenderer.drawString(itemRarityColorCode + itemName, posX, posY, stringColor);
         }
     }
 

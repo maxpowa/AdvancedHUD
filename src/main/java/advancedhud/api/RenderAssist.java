@@ -1,21 +1,21 @@
 package advancedhud.api;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * 
@@ -37,12 +37,13 @@ public class RenderAssist {
         float f1 = (color >> 16 & 255) / 255.0F;
         float f2 = (color >> 8 & 255) / 255.0F;
         float f3 = (color & 255) / 255.0F;
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
+        final WorldRenderer renderer = tessellator.getWorldRenderer();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(f1, f2, f3, f);
-        tessellator.startDrawing(GL11.GL_LINE_LOOP);
+        renderer.startDrawing(GL11.GL_LINE_LOOP);
         for (int i = 0; i < num_segments; i++) {
             double theta = 2.0f * Math.PI * i / num_segments;// get the current
                                                              // angle
@@ -50,7 +51,7 @@ public class RenderAssist {
             double x = radius * Math.cos(theta);// calculate the x component
             double y = radius * Math.sin(theta);// calculate the y component
 
-            tessellator.addVertex(x + posX, y + posY, 0.0D);// output vertex
+            renderer.addVertex(x + posX, y + posY, 0.0D);// output vertex
 
         }
         tessellator.draw();
@@ -114,16 +115,17 @@ public class RenderAssist {
         float f1 = (color >> 16 & 255) / 255.0F;
         float f2 = (color >> 8 & 255) / 255.0F;
         float f3 = (color & 255) / 255.0F;
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
+        final WorldRenderer renderer = tessellator.getWorldRenderer();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(f1, f2, f3, f);
-        tessellator.startDrawing(GL11.GL_LINE_LOOP);
-        tessellator.addVertex(x1, y2, 0.0D);
-        tessellator.addVertex(x2, y2, 0.0D);
-        tessellator.addVertex(x2, g, 0.0D);
-        tessellator.addVertex(x1, g, 0.0D);
+        renderer.startDrawing(GL11.GL_LINE_LOOP);
+        renderer.addVertex(x1, y2, 0.0D);
+        renderer.addVertex(x2, y2, 0.0D);
+        renderer.addVertex(x2, g, 0.0D);
+        renderer.addVertex(x1, g, 0.0D);
         tessellator.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
@@ -167,12 +169,13 @@ public class RenderAssist {
      */
     public static void drawTexturedModalRect(float x, float y, float u, float v, float width, float height) {
         float f = 0.00390625F;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x + 0, y + height, RenderAssist.zLevel, (u + 0) * f, (v + height) * f);
-        tessellator.addVertexWithUV(x + width, y + height, RenderAssist.zLevel, (u + width) * f, (v + height) * f);
-        tessellator.addVertexWithUV(x + width, y + 0, RenderAssist.zLevel, (u + width) * f, (v + 0) * f);
-        tessellator.addVertexWithUV(x + 0, y + 0, RenderAssist.zLevel, (u + 0) * f, (v + 0) * f);
+        Tessellator tessellator = Tessellator.getInstance();
+        final WorldRenderer renderer = tessellator.getWorldRenderer();
+        renderer.startDrawingQuads();
+        renderer.addVertexWithUV(x + 0, y + height, RenderAssist.zLevel, (u + 0) * f, (v + height) * f);
+        renderer.addVertexWithUV(x + width, y + height, RenderAssist.zLevel, (u + width) * f, (v + height) * f);
+        renderer.addVertexWithUV(x + width, y + 0, RenderAssist.zLevel, (u + width) * f, (v + 0) * f);
+        renderer.addVertexWithUV(x + 0, y + 0, RenderAssist.zLevel, (u + 0) * f, (v + 0) * f);
         tessellator.draw();
     }
 
@@ -223,16 +226,17 @@ public class RenderAssist {
         float f1 = (color >> 16 & 255) / 255.0F;
         float f2 = (color >> 8 & 255) / 255.0F;
         float f3 = (color & 255) / 255.0F;
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
+        final WorldRenderer renderer = tessellator.getWorldRenderer();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(f1, f2, f3, f);
-        tessellator.startDrawingQuads();
-        tessellator.addVertex(g, j, 0.0D);
-        tessellator.addVertex(i, j, 0.0D);
-        tessellator.addVertex(i, h, 0.0D);
-        tessellator.addVertex(g, h, 0.0D);
+        renderer.startDrawingQuads();
+        renderer.addVertex(g, j, 0.0D);
+        renderer.addVertex(i, j, 0.0D);
+        renderer.addVertex(i, h, 0.0D);
+        renderer.addVertex(g, h, 0.0D);
         tessellator.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
@@ -243,7 +247,7 @@ public class RenderAssist {
      * location.
      */
     public static void renderInventorySlot(int slot, int x, int y, float partialTick, Minecraft mc) {
-        RenderItem itemRenderer = new RenderItem();
+        RenderItem itemRenderer = mc.getRenderItem();
         ItemStack itemstack = mc.thePlayer.inventory.mainInventory[slot];
         x += 91;
         y += 12;
@@ -258,14 +262,16 @@ public class RenderAssist {
                 GL11.glScalef(1.0F / f2, (f2 + 1.0F) / 2.0F, 1.0F);
                 GL11.glTranslatef(-(x + 8), -(y + 12), 0.0F);
             }
+            itemRenderer.func_180450_b(itemstack,x,y);
 
-            itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemstack, x, y);
+            //itemRenderer.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), itemstack, x, y);
 
             if (f1 > 0.0F) {
                 GL11.glPopMatrix();
             }
+            itemRenderer.func_180453_a(mc.fontRendererObj, itemstack, x, y, null);
 
-            itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemstack, x, y);
+            //itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemstack, x, y);
         }
     }
     

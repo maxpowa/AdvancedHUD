@@ -10,6 +10,8 @@ import advancedhud.api.Alignment;
 import advancedhud.api.HudItem;
 import advancedhud.client.GuiAdvancedHUD;
 
+import java.io.IOException;
+
 public class GuiScreenReposition extends GuiScreen {
     protected GuiScreen parentScreen;
     protected HudItem hudItem;
@@ -26,7 +28,8 @@ public class GuiScreenReposition extends GuiScreen {
     }
 
     @Override
-    public void handleMouseInput() {
+    public void handleMouseInput()
+      throws IOException {
         int mouseX = Mouse.getEventX() * width / mc.displayWidth;
         int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
@@ -52,8 +55,8 @@ public class GuiScreenReposition extends GuiScreen {
         this.drawDefaultBackground();
 
         if (help) {
-            drawCenteredString(mc.fontRenderer, "CLICK to confirm, ESCAPE to cancel, R to reset, CTRL to align", width / 2, 16, 16777215);
-            drawCenteredString(mc.fontRenderer, "Alignment: " + Alignment.calculateAlignment(mouseX, mouseY), width / 2, 26, 16777215);
+            drawCenteredString(mc.fontRendererObj, "CLICK to confirm, ESCAPE to cancel, R to reset, CTRL to align", width / 2, 16, 16777215);
+            drawCenteredString(mc.fontRendererObj, "Alignment: " + Alignment.calculateAlignment(mouseX, mouseY), width / 2, 26, 16777215);
         }
 
         hudItem.render(GuiAdvancedHUD.partialTicks);
@@ -76,7 +79,8 @@ public class GuiScreenReposition extends GuiScreen {
     }
 
     @Override
-    public void handleKeyboardInput() {
+    public void handleKeyboardInput()
+      throws IOException {
         super.handleKeyboardInput();
 
         if (Keyboard.getEventKey() == 29) {

@@ -7,6 +7,8 @@ import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.client.huditems.HudItemCrosshairs;
 
+import java.io.IOException;
+
 public class GuiScreenHudItem extends GuiScreen {
 
     private HudItem hudItem;
@@ -38,7 +40,7 @@ public class GuiScreenHudItem extends GuiScreen {
             initGui();
         }
 
-        this.drawCenteredString(mc.fontRenderer, hudItem.getButtonLabel(), HUDRegistry.screenWidth / 2, 10, 0xFFFFFF);
+        this.drawCenteredString(mc.fontRendererObj, hudItem.getButtonLabel(), HUDRegistry.screenWidth / 2, 10, 0xFFFFFF);
         super.drawScreen(par1, par2, par3);
     }
 
@@ -50,7 +52,8 @@ public class GuiScreenHudItem extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton) {
+    protected void actionPerformed(GuiButton par1GuiButton)
+      throws IOException {
         if (par1GuiButton.id == -1) {
             mc.displayGuiScreen(parentScreen);
         } else if (par1GuiButton.id == 100) {

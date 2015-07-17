@@ -1,7 +1,5 @@
 package advancedhud;
 
-import org.apache.logging.log4j.Logger;
-
 import advancedhud.api.HUDRegistry;
 import advancedhud.client.huditems.HudItemAir;
 import advancedhud.client.huditems.HudItemArmor;
@@ -15,24 +13,27 @@ import advancedhud.client.huditems.HudItemHotbar;
 import advancedhud.client.huditems.HudItemJumpBar;
 import advancedhud.client.huditems.HudItemRecordDisplay;
 import advancedhud.client.huditems.HudItemTooltips;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.apache.logging.log4j.Logger;
 
-@Mod(modid = "AdvancedHUD", name = "AdvancedHUD", version = "Version [@VERSION@] for @MCVERSION@")
+
+
+
+@Mod(modid = "AdvancedHUD", name = "AdvancedHUD", version = "1.1.0")
 public class AdvancedHUD {
 
-    public static String MC_VERSION = "@MCVERSION@";
-    public static String ADVHUD_VERSION = "@VERSION@";
+    public static String MC_VERSION = "1.8";
+    public static String ADVHUD_VERSION = "1.1.0";
     public static Logger log;
 
-    @EventHandler
+    @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         log = event.getModLog();
     }
-    @EventHandler
+    @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
         FMLCommonHandler.instance().bus().register(new TickHandler());
         FMLCommonHandler.instance().bus().register(new KeyRegister());

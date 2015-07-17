@@ -1,7 +1,10 @@
 package advancedhud.client.huditems;
 
-import java.util.Random;
-
+import advancedhud.api.Alignment;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+import advancedhud.api.RenderAssist;
+import advancedhud.client.ui.GuiScreenHudItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -9,19 +12,15 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
-
 import org.lwjgl.opengl.GL11;
 
-import advancedhud.api.Alignment;
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
-import advancedhud.api.RenderAssist;
-import advancedhud.client.ui.GuiScreenHudItem;
+import java.util.Random;
 
 public class HudItemHealth extends HudItem {
 
     Minecraft mc = null;
     Random rand = new Random();
+    Float prevHealth;
 
     @Override
     public String getName() {
@@ -84,7 +83,8 @@ public class HudItemHealth extends HudItem {
 
         IAttributeInstance attrMaxHealth = mc.thePlayer.getEntityAttribute(SharedMonsterAttributes.maxHealth);
         int health = MathHelper.ceiling_float_int(mc.thePlayer.getHealth());
-        int healthLast = MathHelper.ceiling_float_int(mc.thePlayer.prevHealth);
+        int healthLast = MathHelper.ceiling_float_int(prevHealth == null ? health : prevHealth);
+        prevHealth = (float) health;
         float healthMax = (float)attrMaxHealth.getAttributeValue();
         float absorb = mc.thePlayer.getAbsorptionAmount();
 
