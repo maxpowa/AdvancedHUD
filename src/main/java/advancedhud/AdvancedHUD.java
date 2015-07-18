@@ -1,37 +1,28 @@
 package advancedhud;
 
-import org.apache.logging.log4j.Logger;
-
 import advancedhud.api.HUDRegistry;
-import advancedhud.client.huditems.HudItemAir;
-import advancedhud.client.huditems.HudItemArmor;
-import advancedhud.client.huditems.HudItemBossBar;
-import advancedhud.client.huditems.HudItemCrosshairs;
-import advancedhud.client.huditems.HudItemExperienceBar;
-import advancedhud.client.huditems.HudItemFood;
-import advancedhud.client.huditems.HudItemHealth;
-import advancedhud.client.huditems.HudItemHealthMount;
-import advancedhud.client.huditems.HudItemHotbar;
-import advancedhud.client.huditems.HudItemJumpBar;
-import advancedhud.client.huditems.HudItemRecordDisplay;
-import advancedhud.client.huditems.HudItemTooltips;
+import advancedhud.client.huditems.*;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import org.apache.logging.log4j.Logger;
 
-@Mod(modid = "AdvancedHUD", name = "AdvancedHUD", version = "Version [@VERSION@] for @MCVERSION@")
+@Mod(modid = AdvancedHUD.MOD_ID, name = "AdvancedHUD", version = AdvancedHUD.VERSION)
 public class AdvancedHUD {
 
-    public static String MC_VERSION = "@MCVERSION@";
-    public static String ADVHUD_VERSION = "@VERSION@";
+    public final static String MOD_ID = "advancedhud";
+    public final static String VERSION = "@VERSION@";
+
+    public final static String MC_VERSION = "@MCVERSION@";
     public static Logger log;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         log = event.getModLog();
     }
+
     @EventHandler
     public void onInit(FMLInitializationEvent event) {
         FMLCommonHandler.instance().bus().register(new TickHandler());

@@ -1,8 +1,10 @@
 package advancedhud.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import advancedhud.AdvancedHUD;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+import advancedhud.api.RenderAssist;
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiPlayerInfo;
@@ -21,18 +23,15 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.GuiIngameForge;
-
 import org.lwjgl.opengl.GL11;
 
-import advancedhud.AdvancedHUD;
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
-import advancedhud.api.RenderAssist;
-import cpw.mods.fml.common.FMLCommonHandler;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiAdvancedHUD extends GuiIngameForge {
 
     public static float partialTicks;
+    private long lastTick = System.currentTimeMillis();
 
     private ScaledResolution res = null;
 
@@ -55,9 +54,19 @@ public class GuiAdvancedHUD extends GuiIngameForge {
 
         res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 
+        float delta = (System.currentTimeMillis() - lastTick) / 1000F;
+        lastTick = System.currentTimeMillis();
+
         mc.mcProfiler.startSection("modules");
         for (HudItem huditem : HUDRegistry.getHudItemList()) {
             mc.mcProfiler.startSection(huditem.getName());
+
+            if (huditem.needsTween()) {
+                mc.mcProfiler.startSection("tween");
+                huditem.update(delta);
+                mc.mcProfiler.endSection();
+            }
+
             if (mc.playerController.isInCreativeMode() && !huditem.isRenderedInCreative()) {
                 mc.mcProfiler.endSection();
                 continue;

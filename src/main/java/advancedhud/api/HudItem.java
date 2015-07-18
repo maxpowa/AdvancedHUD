@@ -1,5 +1,7 @@
 package advancedhud.api;
 
+import aurelienribon.tweenengine.TweenAccessor;
+import aurelienribon.tweenengine.TweenManager;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -16,13 +18,16 @@ public abstract class HudItem {
     public int posX;
     public int posY;
     private int id;
+    private float opacity = 1.0f;
     public boolean rotated = false;
+    protected TweenManager manager = null;
 
     public HudItem() {
         alignment = getDefaultAlignment();
         posX = getDefaultPosX();
         posY = getDefaultPosY();
         id = getDefaultID();
+        manager = new TweenManager();
     }
 
     /**
@@ -67,7 +72,7 @@ public abstract class HudItem {
      */
     public abstract GuiScreen getConfigScreen();
 
-    public abstract void render(float paramFloat);
+    public abstract void render(float partialTicks);
 
     /**
      * 
@@ -85,6 +90,16 @@ public abstract class HudItem {
     public void tick() {
 
     }
+
+    /**
+     *
+     * @param delta Delta time (in seconds) since this method was last called
+     */
+    public void update(float delta) {
+        manager.update(delta); // Tween manager expects delta to be in seconds.
+    }
+
+    public boolean needsTween() { return false; }
 
     /**
      * Set this to true if you require the {@link HudItem}.tick() method to run<br>
@@ -160,4 +175,14 @@ public abstract class HudItem {
     public boolean canRotate() {
         return true;
     }
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+    }
+
+    public float getOpacity() {
+        return this.opacity;
+    }
+
+    public interface TweenEngine<T extends HudItem> extends TweenAccessor<T> {}
 }

@@ -1,19 +1,18 @@
 package advancedhud.client.huditems;
 
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.FoodStats;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiScreenHudItem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.FoodStats;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 public class HudItemFood extends HudItem {
 
@@ -75,6 +74,7 @@ public class HudItemFood extends HudItem {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, this.getOpacity());
 
         int left = posX + 81;
         int top = posY;

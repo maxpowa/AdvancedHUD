@@ -1,20 +1,19 @@
 package advancedhud.client.huditems;
 
+import advancedhud.AdvancedHUD;
+import advancedhud.api.Alignment;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
+import advancedhud.api.RenderAssist;
+import advancedhud.client.ui.GuiScreenHudItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import advancedhud.api.Alignment;
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
-import advancedhud.api.RenderAssist;
-import advancedhud.client.ui.GuiScreenHudItem;
 
 public class HudItemHotbar extends HudItem {
 
@@ -71,6 +70,7 @@ public class HudItemHotbar extends HudItem {
     public void render(float partialTicks) {
         Minecraft mc = HUDRegistry.getMinecraftInstance();
 
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -79,7 +79,7 @@ public class HudItemHotbar extends HudItem {
         if (!rotated) {
             RenderAssist.bindTexture(new ResourceLocation("textures/gui/widgets.png"));
             RenderAssist.drawTexturedModalRect(posX, posY, 0, 0, 182, 22);
-            RenderAssist.bindTexture(new ResourceLocation("advancedhud", "textures/gui/rotateWidgets.png"));
+            RenderAssist.bindTexture(new ResourceLocation(AdvancedHUD.MOD_ID, "textures/gui/rotateWidgets.png"));
             RenderAssist.drawTexturedModalRect(posX - 1 + inv.currentItem * 20, posY - 1, 0, 0, 24, 24);
 
             GL11.glDisable(GL11.GL_BLEND);
@@ -99,7 +99,7 @@ public class HudItemHotbar extends HudItem {
             GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
             RenderAssist.bindTexture(new ResourceLocation("textures/gui/widgets.png"));
             RenderAssist.drawTexturedModalRect(0, 0, 0, 0, 182, 22);
-            RenderAssist.bindTexture(new ResourceLocation("advancedhud", "textures/gui/rotateWidgets.png"));
+            RenderAssist.bindTexture(new ResourceLocation(AdvancedHUD.MOD_ID, "textures/gui/rotateWidgets.png"));
             RenderAssist.drawTexturedModalRect(inv.currentItem * 20 - 1, -1, 0, 0, 24, 24);
 
             GL11.glDisable(GL11.GL_BLEND);
@@ -115,6 +115,7 @@ public class HudItemHotbar extends HudItem {
 
             RenderHelper.disableStandardItemLighting();
         }
+        GL11.glPopAttrib();
     }
 
     @Override
