@@ -1,16 +1,14 @@
 package advancedhud.client.ui;
 
+import advancedhud.SaveController;
+import advancedhud.api.HUDRegistry;
+import advancedhud.api.HudItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.input.Keyboard;
-
-import advancedhud.SaveController;
-import advancedhud.api.HUDRegistry;
-import advancedhud.api.HudItem;
 
 public class GuiAdvancedHUDConfiguration extends GuiScreen {
 
@@ -90,8 +88,8 @@ public class GuiAdvancedHUDConfiguration extends GuiScreen {
     @Override
     public void mouseClicked(int i, int j, int mouseButton) {
         if (mouseButton == 1) {
-            for (int l = 0; l < buttonList.size(); ++l) {
-                GuiButton guibutton = (GuiButton) buttonList.get(l);
+            for (Object button : buttonList) {
+                GuiButton guibutton = (GuiButton) button;
 
                 if (guibutton.mousePressed(mc, i, j)) {
                     mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));

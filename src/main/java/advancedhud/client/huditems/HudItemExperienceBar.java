@@ -1,11 +1,5 @@
 package advancedhud.client.huditems;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-
-import org.lwjgl.opengl.GL11;
-
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
@@ -13,6 +7,10 @@ import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.opengl.GL11;
 
 public class HudItemExperienceBar extends HudItem {
 
@@ -63,8 +61,6 @@ public class HudItemExperienceBar extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int cap = mc.thePlayer.xpBarCap();
@@ -92,8 +88,7 @@ public class HudItemExperienceBar extends HudItem {
         }
 
         if (mc.playerController.isNotCreative() && mc.thePlayer.experienceLevel > 0) {
-            boolean flag1 = false;
-            int color = flag1 ? 16777215 : 8453920;
+            int color = 8453920;
             String text = "" + mc.thePlayer.experienceLevel;
             int x = posX + 91 - mc.fontRenderer.getStringWidth(text) / 2;
             int y = posY - 6;
@@ -104,8 +99,6 @@ public class HudItemExperienceBar extends HudItem {
             mc.fontRenderer.drawString(text, x, y, color);
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
     @Override

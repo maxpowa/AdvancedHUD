@@ -85,6 +85,7 @@ public class HudItemHotbar extends HudItem {
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();
+            GL11.glPopAttrib();
             RenderHelper.enableGUIStandardItemLighting();
 
             for (int i = 0; i < 9; ++i) {
@@ -105,6 +106,7 @@ public class HudItemHotbar extends HudItem {
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();
+            GL11.glPopAttrib();
             RenderHelper.enableGUIStandardItemLighting();
 
             for (int i = 0; i < 9; ++i) {
@@ -115,7 +117,6 @@ public class HudItemHotbar extends HudItem {
 
             RenderHelper.disableStandardItemLighting();
         }
-        GL11.glPopAttrib();
     }
 
     @Override

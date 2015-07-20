@@ -1,14 +1,12 @@
 package advancedhud.client.ui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-
-import org.lwjgl.opengl.GL11;
-
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
 import advancedhud.client.GuiAdvancedHUD;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import org.lwjgl.opengl.GL11;
 
 public class GuiHudItemButton extends GuiButton {
 
@@ -31,6 +29,7 @@ public class GuiHudItemButton extends GuiButton {
             boolean hoverState = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
             for (HudItem huditem : HUDRegistry.getHudItemList()) {
                 if (huditem.getButtonLabel().equalsIgnoreCase(displayString)) {
+                    drawRect(huditem.posX, huditem.posY, huditem.posX + huditem.getWidth(), huditem.posY + huditem.getHeight(), 0x22FFFFFF);
                     huditem.render(GuiAdvancedHUD.partialTicks);
                 }
             }

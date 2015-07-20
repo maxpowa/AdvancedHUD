@@ -1,11 +1,5 @@
 package advancedhud.client.huditems;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.common.ForgeHooks;
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
@@ -13,6 +7,10 @@ import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.common.ForgeHooks;
 
 public class HudItemArmor extends HudItem {
 
@@ -67,8 +65,6 @@ public class HudItemArmor extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
 
         int left = posX;
@@ -92,8 +88,6 @@ public class HudItemArmor extends HudItem {
                 top += 8;
             }
         }
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
     @Override

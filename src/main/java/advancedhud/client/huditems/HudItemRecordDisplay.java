@@ -1,16 +1,15 @@
 package advancedhud.client.huditems;
 
-import java.awt.Color;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-
-import org.lwjgl.opengl.GL11;
-
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
+import advancedhud.client.GuiAdvancedHUD;
 import advancedhud.client.ui.GuiScreenHudItem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 public class HudItemRecordDisplay extends HudItem {
 
@@ -35,7 +34,7 @@ public class HudItemRecordDisplay extends HudItem {
 
     @Override
     public int getDefaultPosX() {
-        return HUDRegistry.screenWidth / 2;
+        return HUDRegistry.screenWidth / 2 - 90;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class HudItemRecordDisplay extends HudItem {
 
     @Override
     public int getWidth() {
-        return 36;
+        return 180;
     }
 
     @Override
@@ -74,14 +73,11 @@ public class HudItemRecordDisplay extends HudItem {
             }
 
             if (opacity > 0) {
-                GL11.glPushMatrix();
-                GL11.glTranslatef(posX, posY, 0.0F);
+                GL11.glTranslatef(posX + this.getWidth() / 2, posY + this.getHeight() / 2, 0.0F);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 int color = recordIsPlaying ? Color.HSBtoRGB(hue / 50.0F, 0.7F, 0.6F) & 0xFFFFFF : 0xFFFFFF;
                 mc.fontRenderer.drawString(recordPlaying, -mc.fontRenderer.getStringWidth(recordPlaying) / 2, -4, color | opacity << 24);
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glPopMatrix();
             }
         }
     }
@@ -93,9 +89,23 @@ public class HudItemRecordDisplay extends HudItem {
 
     @Override
     public void tick() {
+        if (Minecraft.getMinecraft().ingameGUI instanceof GuiAdvancedHUD) {
+            GuiAdvancedHUD ingame = (GuiAdvancedHUD) Minecraft.getMinecraft().ingameGUI;
+            if (ingame.recordPlaying != null && !ingame.recordPlaying.equals(this.recordPlaying)) {
+                this.recordPlaying = ingame.recordPlaying;
+                this.recordIsPlaying = ingame.recordIsPlaying;
+                this.recordPlayingUpFor = ingame.recordPlayingUpFor*2;
+            }
+        }
+
         if (recordPlayingUpFor > 0) {
             --recordPlayingUpFor;
         }
+    }
+
+    @Override
+    public boolean canRotate() {
+        return false;
     }
 
 }

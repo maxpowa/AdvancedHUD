@@ -1,14 +1,12 @@
 package advancedhud.client.ui;
 
-import net.minecraft.client.gui.GuiScreen;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import advancedhud.SaveController;
 import advancedhud.api.Alignment;
 import advancedhud.api.HudItem;
 import advancedhud.client.GuiAdvancedHUD;
+import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 public class GuiScreenReposition extends GuiScreen {
     protected GuiScreen parentScreen;
@@ -56,6 +54,7 @@ public class GuiScreenReposition extends GuiScreen {
             drawCenteredString(mc.fontRenderer, "Alignment: " + Alignment.calculateAlignment(mouseX, mouseY), width / 2, 26, 16777215);
         }
 
+        drawRect(hudItem.posX, hudItem.posY, hudItem.posX + hudItem.getWidth(), hudItem.posY + hudItem.getHeight(), 0x22FFFFFF);
         hudItem.render(GuiAdvancedHUD.partialTicks);
 
         if (axisAlign) {

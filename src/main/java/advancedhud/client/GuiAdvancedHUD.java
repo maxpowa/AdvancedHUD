@@ -34,6 +34,9 @@ public class GuiAdvancedHUD extends GuiIngameForge {
     private long lastTick = System.currentTimeMillis();
 
     private ScaledResolution res = null;
+    public String recordPlaying;
+    public boolean recordIsPlaying;
+    public int recordPlayingUpFor = 0;
 
     public GuiAdvancedHUD(Minecraft mc) {
         super(mc);
@@ -71,6 +74,12 @@ public class GuiAdvancedHUD extends GuiIngameForge {
                 mc.mcProfiler.endSection();
                 continue;
             }
+
+            GL11.glPushMatrix();
+            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+//            GL11.glDisable(GL11.GL_LIGHTING);
+//            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GL11.glDisable(GL11.GL_BLEND);
             if (mc.thePlayer.ridingEntity instanceof EntityLivingBase) {
                 if (huditem.shouldDrawOnMount()) {
                     huditem.fixBounds();
@@ -82,6 +91,8 @@ public class GuiAdvancedHUD extends GuiIngameForge {
                     huditem.render(partialTicks);
                 }
             }
+            GL11.glPopAttrib();
+            GL11.glPopMatrix();
             mc.mcProfiler.endSection();
         }
         mc.mcProfiler.endSection();
@@ -199,7 +210,7 @@ public class GuiAdvancedHUD extends GuiIngameForge {
             List<?> players = handler.playerInfoList;
             int maxPlayers = handler.currentServerMaxPlayers;
             int rows = maxPlayers;
-            int columns = 1;
+            int columns;
 
             for (columns = 1; rows > 20; rows = (maxPlayers + columns - 1) / columns) {
                 columns++;
@@ -304,5 +315,14 @@ public class GuiAdvancedHUD extends GuiIngameForge {
         HUDRegistry.updateCounter = updateCounter;
 
         mc.mcProfiler.endSection();
+    }
+
+    // setRecordPlaying
+    @Override
+    public void func_110326_a(String recordName, boolean isPlaying)
+    {
+        this.recordPlaying = recordName;
+        this.recordPlayingUpFor = 60;
+        this.recordIsPlaying = isPlaying;
     }
 }

@@ -71,8 +71,6 @@ public class HudItemFood extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, this.getOpacity());
 
@@ -117,8 +115,6 @@ public class HudItemFood extends HudItem {
                 RenderAssist.drawTexturedModalRect(x, y, icon + 45, 27, 9, 9);
             }
         }
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
     @Override

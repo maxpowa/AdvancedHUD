@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 public class HudItemAir extends HudItem {
 
-    private boolean wasInWater = false;
+    private boolean wasInWater = true;
 
     public HudItemAir() {
         // If we override the constructor, we should ALWAYS call super()! It's important!
@@ -78,27 +78,21 @@ public class HudItemAir extends HudItem {
 
     @Override
     public void render(float paramFloat) {
-        Minecraft mc = Minecraft.getMinecraft();
-        GL11.glPushMatrix();
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
         GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        Minecraft mc = Minecraft.getMinecraft();
         RenderAssist.bindTexture(Gui.icons);
         int left = posX + 81;
         int top = posY;
 
         if (mc.thePlayer.isInsideOfMaterial(Material.water) || mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition) {
             if (!wasInWater) {
-                Tween.to(this, Engine.OPACITY, 1.0f)
-                     .target(1.0f)
-                     .start(manager);
+                Tween.to(this, Engine.OPACITY, 0.1f).target(1.0f).start(manager);
                 wasInWater = true;
             }
         }
         if (!mc.thePlayer.isInsideOfMaterial(Material.water) && wasInWater) {
-            Tween.to(this, Engine.OPACITY, 1.0f)
-                 .delay(1.0f)
-                 .target(0.0f)
-                 .start(manager);
+            Tween.to(this, Engine.OPACITY, 1.0f).delay(1.0f).target(0.0f).start(manager);
             wasInWater = false;
         }
 
@@ -113,10 +107,6 @@ public class HudItemAir extends HudItem {
             else
                 RenderAssist.drawTexturedModalRect(left - 81, top + 72 - i * 8, i < full ? 16 : 25, 18, 9, 9);
         }
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopAttrib();
-        GL11.glPopMatrix();
     }
 
     @Override

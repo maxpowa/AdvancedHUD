@@ -1,13 +1,5 @@
 package advancedhud.client.huditems;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.boss.BossStatus;
-
-import org.lwjgl.opengl.GL11;
-
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
@@ -15,6 +7,12 @@ import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.boss.BossStatus;
+import org.lwjgl.opengl.GL11;
 
 public class HudItemBossBar extends HudItem {
 
@@ -61,8 +59,6 @@ public class HudItemBossBar extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture("textures/gui/icons.png");
         if (BossStatus.bossName != null && BossStatus.statusBarTime > 0 || mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition) {
             if (BossStatus.bossName != null) {
@@ -89,8 +85,6 @@ public class HudItemBossBar extends HudItem {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             RenderAssist.bindTexture(Gui.icons);
         }
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
     @Override
@@ -98,4 +92,8 @@ public class HudItemBossBar extends HudItem {
         return new GuiScreenHudItem(Minecraft.getMinecraft().currentScreen, this);
     }
 
+    @Override
+    public boolean canRotate() {
+        return false;
+    }
 }

@@ -1,14 +1,13 @@
 package advancedhud.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTTagCompound;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -129,8 +128,7 @@ public class HUDRegistry {
         screenHeight = nbt.getInteger("screenHeight");
 
         hudItemListActive = new ArrayList<HudItem>(hudItemList);
-        for (int i = 0; i < hudItemList.size(); i++) {
-            HudItem hudItem = hudItemList.get(i);
+        for (HudItem hudItem : hudItemList) {
             if (!nbt.hasKey(hudItem.getName())) {
                 disableHudItem(hudItem);
             }

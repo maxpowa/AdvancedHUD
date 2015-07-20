@@ -1,11 +1,5 @@
 package advancedhud.client.huditems;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-
-import org.lwjgl.opengl.GL11;
-
 import advancedhud.api.Alignment;
 import advancedhud.api.HUDRegistry;
 import advancedhud.api.HudItem;
@@ -13,6 +7,10 @@ import advancedhud.api.RenderAssist;
 import advancedhud.client.ui.GuiAdvancedHUDConfiguration;
 import advancedhud.client.ui.GuiScreenHudItem;
 import advancedhud.client.ui.GuiScreenReposition;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.opengl.GL11;
 
 public class HudItemJumpBar extends HudItem {
 
@@ -59,8 +57,6 @@ public class HudItemJumpBar extends HudItem {
     @Override
     public void render(float paramFloat) {
         Minecraft mc = Minecraft.getMinecraft();
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
         RenderAssist.bindTexture(Gui.icons);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -80,8 +76,6 @@ public class HudItemJumpBar extends HudItem {
             RenderAssist.drawTexturedModalRect(x, top, 0, 89, filled, 5);
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
     @Override
