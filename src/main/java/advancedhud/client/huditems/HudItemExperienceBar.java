@@ -14,6 +14,10 @@ import org.lwjgl.opengl.GL11;
 
 public class HudItemExperienceBar extends HudItem {
 
+    private float max_xp = 0;
+    private float current_xp = 0;
+    private int current_level = 0;
+
     @Override
     public String getName() {
         return "experiencebar";
@@ -45,12 +49,12 @@ public class HudItemExperienceBar extends HudItem {
 
     @Override
     public int getWidth() {
-        return rotated ? 4 : 182;
+        return rotated ? 5 : 182;
     }
 
     @Override
     public int getHeight() {
-        return rotated ? 182 : 4;
+        return rotated ? 182 : 5;
     }
 
     @Override
@@ -63,12 +67,11 @@ public class HudItemExperienceBar extends HudItem {
         Minecraft mc = Minecraft.getMinecraft();
         RenderAssist.bindTexture(Gui.icons);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int cap = mc.thePlayer.xpBarCap();
         int left = posX;
 
-        if (cap > 0) {
+        if (this.max_xp > 0) {
             short barWidth = 182;
-            int filled = (int) (mc.thePlayer.experience * (barWidth + 1));
+            int filled = (int) (this.current_xp * (barWidth + 1));
             int top = posY;
             if (rotated) {
                 GL11.glTranslatef(left+5, top, 0.0F);
@@ -79,7 +82,7 @@ public class HudItemExperienceBar extends HudItem {
             RenderAssist.drawTexturedModalRect(0, 0, 0, 64, barWidth, 5);
 
             if ((mc.currentScreen instanceof GuiAdvancedHUDConfiguration || mc.currentScreen instanceof GuiScreenReposition) && filled == 0) {
-                filled = 182;
+                filled = 91;
             }
 
             if (filled > 0) {
@@ -87,11 +90,11 @@ public class HudItemExperienceBar extends HudItem {
             }
         }
 
-        if (mc.playerController.isNotCreative() && mc.thePlayer.experienceLevel > 0) {
+        if (mc.playerController.isNotCreative() && this.current_level > 0) {
             int color = 8453920;
-            String text = "" + mc.thePlayer.experienceLevel;
-            int x = posX + 91 - mc.fontRenderer.getStringWidth(text) / 2;
-            int y = posY - 6;
+            String text = "" + this.current_level;
+            int x = (this.getWidth() / 2) - mc.fontRenderer.getStringWidth(text) / 2;
+            int y = -Math.round(this.getHeight() * 0.75f);
             mc.fontRenderer.drawString(text, x + 1, y, 0);
             mc.fontRenderer.drawString(text, x - 1, y, 0);
             mc.fontRenderer.drawString(text, x, y + 1, 0);
@@ -99,6 +102,19 @@ public class HudItemExperienceBar extends HudItem {
             mc.fontRenderer.drawString(text, x, y, color);
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    @Override
+    public void tick() {
+        Minecraft mc = Minecraft.getMinecraft();
+        this.max_xp = mc.thePlayer.xpBarCap();
+        this.current_xp = mc.thePlayer.experience;
+        this.current_level = mc.thePlayer.experienceLevel;
+    }
+
+    @Override
+    public boolean needsTick() {
+        return true;
     }
 
     @Override

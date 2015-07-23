@@ -17,6 +17,9 @@ import org.lwjgl.opengl.GL12;
 
 public class HudItemHotbar extends HudItem {
 
+    private static final ResourceLocation WIDGETS = new ResourceLocation("textures/gui/widgets.png");
+    private static final ResourceLocation ROTATE_WIDGETS = new ResourceLocation(AdvancedHUD.MOD_ID, "textures/gui/rotateWidgets.png");
+
     public HudItemHotbar() {
         super();
     }
@@ -77,15 +80,18 @@ public class HudItemHotbar extends HudItem {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         InventoryPlayer inv = mc.thePlayer.inventory;
         if (!rotated) {
-            RenderAssist.bindTexture(new ResourceLocation("textures/gui/widgets.png"));
+            RenderAssist.bindTexture(WIDGETS);
             RenderAssist.drawTexturedModalRect(posX, posY, 0, 0, 182, 22);
-            RenderAssist.bindTexture(new ResourceLocation(AdvancedHUD.MOD_ID, "textures/gui/rotateWidgets.png"));
             RenderAssist.drawTexturedModalRect(posX - 1 + inv.currentItem * 20, posY - 1, 0, 0, 24, 24);
 
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();
             GL11.glPopAttrib();
+
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             RenderHelper.enableGUIStandardItemLighting();
 
             for (int i = 0; i < 9; ++i) {
@@ -95,18 +101,23 @@ public class HudItemHotbar extends HudItem {
             }
 
             RenderHelper.disableStandardItemLighting();
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         } else {
             GL11.glTranslatef((float) posX + getWidth(), posY, 0.0F);
             GL11.glRotatef(90F, 0.0F, 0.0F, 1.0F);
-            RenderAssist.bindTexture(new ResourceLocation("textures/gui/widgets.png"));
+            RenderAssist.bindTexture(WIDGETS);
             RenderAssist.drawTexturedModalRect(0, 0, 0, 0, 182, 22);
-            RenderAssist.bindTexture(new ResourceLocation(AdvancedHUD.MOD_ID, "textures/gui/rotateWidgets.png"));
+            RenderAssist.bindTexture(ROTATE_WIDGETS);
             RenderAssist.drawTexturedModalRect(inv.currentItem * 20 - 1, -1, 0, 0, 24, 24);
 
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();
             GL11.glPopAttrib();
+
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             RenderHelper.enableGUIStandardItemLighting();
 
             for (int i = 0; i < 9; ++i) {
@@ -116,6 +127,7 @@ public class HudItemHotbar extends HudItem {
             }
 
             RenderHelper.disableStandardItemLighting();
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         }
     }
 

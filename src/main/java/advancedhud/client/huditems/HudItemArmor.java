@@ -26,6 +26,8 @@ public class HudItemArmor extends HudItem {
 
     @Override
     public Alignment getDefaultAlignment() {
+        if (rotated)
+            return Alignment.CENTERRIGHT;
         return Alignment.BOTTOMCENTER;
     }
 

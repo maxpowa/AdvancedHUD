@@ -77,8 +77,6 @@ public class GuiAdvancedHUD extends GuiIngameForge {
 
             GL11.glPushMatrix();
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-//            GL11.glDisable(GL11.GL_LIGHTING);
-//            GL11.glDisable(GL11.GL_DEPTH_TEST);
             GL11.glDisable(GL11.GL_BLEND);
             if (mc.thePlayer.ridingEntity instanceof EntityLivingBase) {
                 if (huditem.shouldDrawOnMount()) {
